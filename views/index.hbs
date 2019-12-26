@@ -1,3 +1,21 @@
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+
+<script>
+    function login() {
+        var email = $('.userEmail').val();
+        var password = $('.userPassword').val();
+        $.ajax({
+            url: '/',
+            type: 'POST',
+            contentType: 'application/json',
+            data: JSON.stringify({
+                'email': email,
+                'password': password
+            })
+        })
+
+    }
+</script>
 <div class="card mx-auto" style="width: 500px; margin-top:200px">
     <div class="card-body">
         <div class="row">
@@ -6,9 +24,9 @@
         <div class="row" style="margin-top: 50px;">
             <div class="input-group mb-3">
                 <div class="input-group-prepend">
-                    <span class="input-group-text" id="inputGroup-sizing-default">Username</span>
+                    <span class="input-group-text" id="inputGroup-sizing-default">Email</span>
                 </div>
-                <input type="text" class="form-control" aria-label="Sizing example input"
+                <input type="text" class="userEmail form-control" aria-label="Sizing example input"
                     aria-describedby="inputGroup-sizing-default">
             </div>
 
@@ -16,13 +34,13 @@
                 <div class="input-group-prepend">
                     <span class="input-group-text" id="inputGroup-sizing-default">Password</span>
                 </div>
-                <input type="password" class="form-control" aria-label="Sizing example input"
+                <input type="password" class="userPassword form-control" aria-label="Sizing example input"
                     aria-describedby="inputGroup-sizing-default">
             </div>
         </div>
-        <div class="row ">
-            <a href="/home" class="mx-auto">
-                <button type="button" class="btn btn-primary">Login</button>
+        <div class="row">
+            <a class="mx-auto">
+                <button type="button" onclick="login()" class="btn btn-primary">Login</button>
             </a>
         </div>
     </div>
