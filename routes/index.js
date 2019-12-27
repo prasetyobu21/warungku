@@ -15,7 +15,26 @@ router.get("/", function(req, res, next) {
   res.render("index");
 });
 
+router.get("/admin", function(req, res, next) {
+  req.session.destroy();
+  res.render("loginAdmin");
+});
+
 router.post("/", loginUser.loginUser);
+
+router.post("/loginAdmin", loginUser.loginAdmin);
+router.get("/auth", function(req, res, next) {
+  if (req.session.status == "agen") {
+    req.session.login = true;
+    res.redirect("/agen");
+  } else if (req.session.status == "warung") {
+    req.session.login = true;
+    res.redirect("/warung");
+  } else {
+    console.log(err);
+    console.log("User undefined !");
+  }
+});
 
 router.get("/warung", function(req, res, next) {
   if (req.session.login && req.session.status == "warung") {
@@ -32,6 +51,15 @@ router.get("/agen", function(req, res, next) {
     res.render("client/agen/dashboard");
   } else {
     res.redirect("/");
+  }
+});
+
+router.get("/adminPanel", function(req, res, next) {
+  if (req.session.login && req.session.status == "admin") {
+    console.log("welcome " + req.session.userID);
+    res.render("admin/dashboard");
+  } else {
+    res.redirect("/admin");
   }
 });
 

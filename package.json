@@ -15,6 +15,7 @@
     "express-session": "^1.17.0",
     "hbs": "^4.0.6",
     "http-errors": "^1.6.3",
+    "mongodb": "^3.4.1",
     "mongoose": "^5.7.5",
     "mongose": "0.0.2-security",
     "morgan": "^1.9.1",

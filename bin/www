@@ -8,12 +8,19 @@ var app = require("../app");
 var debug = require("debug")("warungku3:server");
 var http = require("http");
 const db = require("../dbSql");
+const MongoClient = require("mongodb").MongoClient;
+const url =
+  "mongodb+srv://prasetyobu21:21mei1999@cluster0-wupzd.mongodb.net/test?retryWrites=true&w=majority";
 
+MongoClient.connect(url, function(err, db) {
+  if (err) throw err;
+  console.log("MONGODB CONNECTED");
+});
 var con = db.conn;
 
 con.connect(function(err) {
   if (!err) {
-    console.log("CONNECTED");
+    console.log("MYSQL CONNECTED");
   } else {
     console.log("err");
   }

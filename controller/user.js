@@ -20,12 +20,29 @@ exports.loginUser = function(req, res, next) {
       if (result.length > 0) {
         req.session.userID = result[0].userEmail;
         req.session.status = result[0].userStatus;
-        if (req.session.status == "agen") {
+        res.redirect("/auth");
+      } else if (err) {
+        console.log("Wrong Credentials");
+        res.redirect("/");
+        res.send("Incorrect Username and/or Password!");
+      }
+    }
+  );
+};
+
+exports.loginAdmin = function(req, res, next) {
+  var email = req.body.email;
+  var password = req.body.password;
+  con.query(
+    "select * from users where userEmail = ? and userPassword = ?",
+    [email, password],
+    function(err, result) {
+      if (result.length > 0) {
+        req.session.userID = result[0].userEmail;
+        req.session.status = result[0].userStatus;
+        if (req.session.status == "admin") {
           req.session.login = true;
-          res.redirect("/agen");
-        } else if (req.session.status == "warung") {
-          req.session.login = true;
-          res.redirect("/warung");
+          res.redirect("/adminPanel");
         } else {
           console.log(err);
           console.log("User undefined !");
