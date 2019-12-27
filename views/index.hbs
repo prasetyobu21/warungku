@@ -1,7 +1,7 @@
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 
 <script>
-    function login() {
+    function loginAgen() {
         var email = $('.userEmail').val();
         var password = $('.userPassword').val();
         $.ajax({
@@ -12,6 +12,24 @@
                 'email': email,
                 'password': password
             })
+        }).done(function () {
+            window.location.assign('/agen')
+        })
+    }
+
+    function loginWarung() {
+        var email = $('.userEmail').val();
+        var password = $('.userPassword').val();
+        $.ajax({
+            url: '/',
+            type: 'POST',
+            contentType: 'application/json',
+            data: JSON.stringify({
+                'email': email,
+                'password': password
+            })
+        }).done(function () {
+            window.location.assign('/warung')
         })
 
     }
@@ -24,23 +42,24 @@
         <div class="row" style="margin-top: 50px;">
             <div class="input-group mb-3">
                 <div class="input-group-prepend">
-                    <span class="input-group-text" id="inputGroup-sizing-default">Email</span>
+
                 </div>
                 <input type="text" class="userEmail form-control" aria-label="Sizing example input"
-                    aria-describedby="inputGroup-sizing-default">
+                    aria-describedby="inputGroup-sizing-default" placeholder="Email or Username">
             </div>
 
             <div class="input-group mb-3">
                 <div class="input-group-prepend">
-                    <span class="input-group-text" id="inputGroup-sizing-default">Password</span>
+
                 </div>
-                <input type="password" class="userPassword form-control" aria-label="Sizing example input"
-                    aria-describedby="inputGroup-sizing-default">
+                <input type="password" class="userPassword form-control" placeholder="Password"
+                    aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default">
             </div>
         </div>
         <div class="row">
             <a class="mx-auto">
-                <button type="button" onclick="login()" class="btn btn-primary">Login</button>
+                <button type="button" onclick="loginWarung()" class="btn btn-primary">Login As Warung</button>
+                <button type="button" onclick="loginAgen()" class="btn btn-primary">Login As Agen</button>
             </a>
         </div>
     </div>
