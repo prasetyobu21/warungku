@@ -1,56 +1,62 @@
 const express = require("express");
-const router = express.Router();
 const app = express();
-const hbs = require("hbs");
-const mongo = require("mongoose");
 app.set("view engine", "hbs");
-const mysql = require("mysql");
 const db = require("../dbSql");
 const session = require("express-session");
 
 var con = db.conn;
 
-exports.loginUser = function(req, res, next) {
-  var email = req.body.email;
-  var password = req.body.password;
+exports.loginUser = (req, res, next) => {
+  const { email, password } = req.body;
   con.query(
     "select * from users where userEmail = ? and userPassword = ?",
     [email, password],
     function(err, result) {
       if (result.length > 0) {
-        req.session.userID = result[0].userEmail;
-        req.session.status = result[0].userStatus;
+        session.userID = result[0].userEmail;
+        session.status = result[0].userStatus;
         res.redirect("/auth");
       } else if (err) {
-        console.log("Wrong Credentials");
-        res.redirect("/");
-        res.send("Incorrect Username and/or Password!");
+        res.redirect("/signin", { message: "Check your account again!" });
       }
     }
   );
 };
 
-exports.loginAdmin = function(req, res, next) {
-  var email = req.body.email;
-  var password = req.body.password;
+exports.loginAdmin = (req, res, next) => {
+  const { email, password } = req.body;
   con.query(
     "select * from users where userEmail = ? and userPassword = ?",
     [email, password],
     function(err, result) {
       if (result.length > 0) {
-        req.session.userID = result[0].userEmail;
-        req.session.status = result[0].userStatus;
-        if (req.session.status == "admin") {
-          req.session.login = true;
+        session.userID = result[0].userEmail;
+        session.status = result[0].userStatus;
+        if (session.status == "admin") {
+          session.login = true;
           res.redirect("/adminPanel");
         } else {
-          console.log(err);
-          console.log("User undefined !");
+          res.redirect("/admin", { message: "Check your account again!" });
         }
       } else if (err) {
-        console.log("Wrong Credentials");
-        res.redirect("/");
-        res.send("Incorrect Username and/or Password!");
+        res.redirect("/signin", { message: "You are not admin!" });
+      }
+    }
+  );
+};
+
+exports.signupUser = (req, res, next) => {
+  const { username, email, password, userStatus } = req.body;
+  const userData = [username, email, password, userStatus];
+  console.log(userData);
+  con.query(
+    "INSERT INTO users (userName, userEmail, userPassword, userStatus) VALUES (?,?,?,?)",
+    userData,
+    (err, result) => {
+      if (err) {
+        console.log(err);
+      } else {
+        res.redirect("/signin");
       }
     }
   );

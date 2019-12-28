@@ -8,14 +8,23 @@ var app = require("../app");
 var debug = require("debug")("warungku3:server");
 var http = require("http");
 const db = require("../dbSql");
-const MongoClient = require("mongodb").MongoClient;
-const url =
-  "mongodb+srv://prasetyobu21:21mei1999@cluster0-wupzd.mongodb.net/test?retryWrites=true&w=majority";
+const mongoose = require("mongoose");
 
-MongoClient.connect(url, function(err, db) {
-  if (err) throw err;
-  console.log("MONGODB CONNECTED");
-});
+mongoose
+  .connect(
+    "mongodb+srv://user:user@maincluster-agxb7.mongodb.net/test?retryWrites=true&w=majority",
+    {
+      useNewUrlParser: true,
+      useUnifiedTopology: true
+    }
+  )
+  .then(() => {
+    console.log("Mongodb Connected");
+  })
+  .catch(err => {
+    console.error("Mongodb Connection Error");
+  });
+
 var con = db.conn;
 
 con.connect(function(err) {
