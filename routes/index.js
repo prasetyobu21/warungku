@@ -8,6 +8,7 @@ const mysql = require("mysql");
 const db = require("../dbSql");
 const session = require("express-session");
 const userController = require("../controller/user");
+const productController = require("../controller/product");
 /* GET home page. */
 
 router.get("/signin", function(req, res, next) {
@@ -62,5 +63,10 @@ router.get("/adminPanel", function(req, res, next) {
     res.redirect("/admin");
   }
 });
+
+router.get("/", productController.showProducts);
+router.post("/addProduct", productController.addProducts);
+router.post("/addToCart", productController.addToCart);
+router.get("/checkout", productController.checkout);
 
 module.exports = router;

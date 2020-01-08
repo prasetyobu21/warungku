@@ -1,8 +1,6 @@
-const express = require("express");
-const app = express();
-app.set("view engine", "hbs");
 const db = require("../dbSql");
 const session = require("express-session");
+const User = require("../models/user");
 
 var con = db.conn;
 
@@ -15,6 +13,10 @@ exports.loginUser = (req, res, next) => {
       if (result.length > 0) {
         session.userID = result[0].userEmail;
         session.status = result[0].userStatus;
+        User.findOne({ email: session.userID }, (err, docs) => {
+          // console.log(docs._id);
+          session.id = docs._id;
+        });
         res.redirect("/auth");
       } else if (err) {
         res.redirect("/signin", { message: "Check your account again!" });
@@ -56,6 +58,15 @@ exports.signupUser = (req, res, next) => {
       if (err) {
         console.log(err);
       } else {
+        const instance = new User();
+        instance.email = email;
+        instance.save((err, docs) => {
+          if (err) {
+            console.log("Error");
+          } else {
+            console.log(docs);
+          }
+        });
         res.redirect("/signin");
       }
     }
