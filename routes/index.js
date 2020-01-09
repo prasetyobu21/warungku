@@ -7,38 +7,41 @@ app.set("view engine", "hbs");
 const mysql = require("mysql");
 const db = require("../dbSql");
 const session = require("express-session");
-const loginUser = require("../controller/user");
+const userController = require("../controller/user");
+const productController = require("../controller/product");
 /* GET home page. */
 
-router.get("/", function(req, res, next) {
-  req.session.destroy();
-  res.render("index");
+router.get("/signin", function(req, res, next) {
+  res.render("signin");
 });
 
+router.get("/signup", (req, res) => {
+  res.render("signup");
+});
+
+router.post("/signup", userController.signupUser);
+
 router.get("/admin", function(req, res, next) {
-  req.session.destroy();
   res.render("loginAdmin");
 });
 
-router.post("/", loginUser.loginUser);
+router.post("/signin", userController.loginUser);
 
-router.post("/loginAdmin", loginUser.loginAdmin);
+router.post("/loginAdmin", userController.loginAdmin);
 router.get("/auth", function(req, res, next) {
-  if (req.session.status == "agen") {
-    req.session.login = true;
+  if (session.status == "agen") {
+    session.login = true;
     res.redirect("/agen");
-  } else if (req.session.status == "warung") {
-    req.session.login = true;
+  } else if (session.status == "warung") {
+    session.login = true;
     res.redirect("/warung");
   } else {
-    console.log(err);
-    console.log("User undefined !");
+    res.redirect("/", { message: "User not found!" });
   }
 });
 
 router.get("/warung", function(req, res, next) {
-  if (req.session.login && req.session.status == "warung") {
-    console.log("welcome " + req.session.userID);
+  if (session.login && session.status == "warung") {
     res.render("client/warung/dashboard");
   } else {
     res.redirect("/");
@@ -46,8 +49,7 @@ router.get("/warung", function(req, res, next) {
 });
 
 router.get("/agen", function(req, res, next) {
-  if (req.session.login && req.session.status == "agen") {
-    console.log("welcome " + req.session.userID);
+  if (session.login && session.status == "agen") {
     res.render("client/agen/dashboard");
   } else {
     res.redirect("/");
@@ -55,12 +57,16 @@ router.get("/agen", function(req, res, next) {
 });
 
 router.get("/adminPanel", function(req, res, next) {
-  if (req.session.login && req.session.status == "admin") {
-    console.log("welcome " + req.session.userID);
+  if (session.login && session.status == "admin") {
     res.render("admin/dashboard");
   } else {
     res.redirect("/admin");
   }
 });
+
+router.get("/", productController.showProducts);
+router.post("/addProduct", productController.addProducts);
+router.post("/addToCart", productController.addToCart);
+router.get("/checkout", productController.checkout);
 
 module.exports = router;
