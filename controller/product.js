@@ -52,9 +52,8 @@ exports.addToCart = (req, res, next) => {
           if (err) {
             console.log(err);
           } else {
-            session.cart = docs._id;
-            res.send(docs);
-            console.log(docs);
+            session.cart = docs;
+            res.send(session.cart._id);
           }
         });
       });
@@ -77,7 +76,7 @@ exports.addToCart = (req, res, next) => {
             if (err) {
               res.send(err);
             } else {
-              res.send(docs);
+              res.send(docs._id);
             }
           }
         );
@@ -89,34 +88,16 @@ exports.addToCart = (req, res, next) => {
 };
 
 exports.checkout = (req, res, next) => {
-  if (session.login && session.id) {
-    if (session.cart == undefined) {
-      res.redirect("/");
+  Cart.findOne({ _id: session.cart._id }, (err, cart) => {
+    if (err) {
+      res.send(err);
     } else {
-      Cart.aggregate(
-        [
-          {
-            $match: { $and: [{ _id: session.cart }] }
-          },
-          {
-            $group: {
-              _id: null,
-              totalPrice: {
-                $sum: "$price"
-              }
-            }
-          }
-        ],
-        (err, result) => {
-          if (err) {
-            res.send(err);
-          } else {
-            res.send(result);
-          }
-        }
-      );
+      const totalProduct = cart.product.length;
+      var totalPrice = 0;
+      for (var i = 0; i < totalProduct; i++) {
+        totalPrice += cart.product[i].price;
+      }
+      res.send(cart + "\n" + "Total Price : " + JSON.stringify(totalPrice));
     }
-  } else {
-    res.redirect("/signin");
-  }
+  });
 };
