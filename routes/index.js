@@ -9,6 +9,7 @@ const db = require("../dbSql");
 const session = require("express-session");
 const userController = require("../controller/user");
 const productController = require("../controller/product");
+const cartController = require("../controller/cart");
 /* GET home page. */
 
 router.get("/signin", function(req, res, next) {
@@ -66,7 +67,9 @@ router.get("/adminPanel", function(req, res, next) {
 
 router.get("/", productController.showProducts);
 router.post("/addProduct", productController.addProducts);
-router.post("/addToCart", productController.addToCart);
-router.get("/checkout", productController.checkout);
+router.post("/addToCart", cartController.addToCart);
+// router.get("/checkout", cartController.checkout);
+router.get("/carts", cartController.cart);
+router.get("/orders", cartController.order);
 
 module.exports = router;

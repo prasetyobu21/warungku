@@ -1,32 +1,20 @@
 const mongoose = require("mongoose");
+const User = require("./user");
+const Product = require("./product");
 
 const Schema = mongoose.Schema;
 
 const cartSchema = new Schema({
-  buyer: {
-    type: String
+  user: {
+    type: Schema.ObjectId,
+    ref: "User"
   },
-  product: [
+  order: [
     {
-      name: {
-        type: String
-      },
-      price: {
-        type: Number
-      },
-      seller: {
-        type: String
-      },
-      qty: {
-        type: Number,
-        default: 1
-      }
+      type: Schema.ObjectId,
+      ref: "Order"
     }
   ],
-  totalPrice: {
-    type: Number,
-    default: 0
-  },
   statusPayment: {
     type: String,
     default: "Belum Bayar"
