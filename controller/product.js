@@ -4,7 +4,7 @@ const Cart = require("../models/cart");
 const session = require("express-session");
 
 exports.showProducts = (req, res, next) => {
-  Cart.find({}, (req, products) => {
+  Product.find({}, (req, products) => {
     res.send(products);
   });
 };

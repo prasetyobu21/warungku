@@ -11,14 +11,14 @@ const session = require("express-session");
 var con = db.conn;
 
 exports.userList = function(req, res, next) {
-  con.query("select * from userdata"),
+  con.query("select * from users"),
     function(err, result) {
       if (result.length > 0) {
         var email = result[0].email;
-        var status = result[0].status;
-        var address = result[0].address;
+        var type = result[0].userType;
+        var address = result[0].userAddress;
         var phone = result[0].phoneNumber;
-        var jenis = result[0].jenis;
+        var status = result[0].userStatus;
       } else if (err) {
         console.log(err);
       }
@@ -27,7 +27,9 @@ exports.userList = function(req, res, next) {
 
 exports.changeUserStatus = function(req, res, next) {
   var email = req.body.email;
-  con.query("update userdata set status = 'nonaktif' where email = ?", [email]);
+  con.query("update users set userStatus = 'nonaktif' where email = ?", [
+    email
+  ]);
 };
 
 exports.itemList = function(req, res, next) {
@@ -66,7 +68,7 @@ exports.transactionList = function(req, res, next) {
 
 exports.viewReport = function(req, res, next) {
   var reportID = req.body.reportID;
-  con.query("select * from report where reportID = ?", [reportID], function(
+  con.query("select * from complain where complainID = ?", [reportID], function(
     result,
     err
   ) {
