@@ -20,8 +20,7 @@ const cartSchema = new Schema({
     }
   ],
   totalPrice: {
-    type: Number,
-    default: 0
+    type: Number
   },
   statusPayment: {
     type: String,
