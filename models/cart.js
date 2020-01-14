@@ -37,6 +37,9 @@ const cartSchema = new Schema({
   date: {
     type: Date,
     default: Date.now()
+  },
+  paymentId: {
+    type: String
   }
 });
 

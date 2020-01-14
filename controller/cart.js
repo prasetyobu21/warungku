@@ -95,3 +95,40 @@ exports.removeCart = (req, res, next) => {
     }
   });
 };
+
+exports.checkout = (req, res, next) => {
+  let cartId = "5e1c207eb9873b4824472471";
+  const stripe = require("stripe")(
+    "sk_test_uDIFUkLi6pqMa1M4iG78eAKq004N78CImt"
+  );
+
+  Cart.findById(cartId, (err, cart) => {
+    if (err) {
+      console.log("Cart not found");
+    } else {
+      stripe.charges.create(
+        {
+          amount: cart.totalPrice * 100,
+          currency: "idr",
+          source: "tok_mastercard",
+          description: "Test Charge"
+        },
+        (err, charge) => {
+          if (err) {
+            console.log(err);
+          } else {
+            cart.paymentId = charge.id;
+            cart.statusPayment = "Sudah Bayar";
+            cart.save((err, cart) => {
+              if (err) {
+                console.log(err);
+              } else {
+                console.log(cart);
+              }
+            });
+          }
+        }
+      );
+    }
+  });
+};
