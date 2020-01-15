@@ -66,9 +66,36 @@ exports.addToCart = async (req, res, next) => {
   });
 };
 
+exports.decreaseOne = async (req, res, next) => {
+  let cartId = "5e1c207eb9873b4824472471";
+  let productId = "5e077056856fca2084ccd7e1";
+  await Product.findById(productId, async (err, product) => {
+    if (err) {
+      res.send(err);
+    } else {
+      await Cart.findById(cartId, async (err, cart) => {
+        if (err) {
+          res.send(err);
+        } else {
+          let item = cart.order.id(productId);
+          item.qty -= 1;
+          cart.totalPrice -= product.price;
+          await cart.save((err, cart) => {
+            if (err) {
+              res.send(err);
+            } else {
+              res.send(cart);
+            }
+          });
+        }
+      });
+    }
+  });
+};
+
 exports.removeFromCart = async (req, res, next) => {
   let cartId = "5e1c207eb9873b4824472471";
-  let productId = "5e171e0b9a469b17e898086f";
+  let productId = "5e077056856fca2084ccd7e1";
   await Cart.findById(cartId, async (err, cart) => {
     if (err) {
       res.send(err);
@@ -99,6 +126,7 @@ exports.removeFromCart = async (req, res, next) => {
 };
 
 exports.removeCart = async (req, res, next) => {
+  let cartId = "5e1c207eb9873b4824472471";
   await Cart.deleteOne({ _id: cartId }, (err, cart) => {
     if (err) {
       res.send(err);
