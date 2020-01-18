@@ -1,24 +1,19 @@
-const express = require("express");
-const router = express.Router();
-const app = express();
-const hbs = require("hbs");
-const mongo = require("mongoose");
-app.set("view engine", "hbs");
-const mysql = require("mysql");
 const db = require("../dbSql");
+const Product = require("../models/product");
+const Cart = require("../models/cart");
 const session = require("express-session");
 
 var con = db.conn;
 
 exports.userList = function(req, res, next) {
-  con.query("select * from userdata"),
+  con.query("select * from users"),
     function(err, result) {
       if (result.length > 0) {
         var email = result[0].email;
-        var status = result[0].status;
-        var address = result[0].address;
+        var type = result[0].userType;
+        var address = result[0].userAddress;
         var phone = result[0].phoneNumber;
-        var jenis = result[0].jenis;
+        var status = result[0].userStatus;
       } else if (err) {
         console.log(err);
       }
@@ -27,46 +22,45 @@ exports.userList = function(req, res, next) {
 
 exports.changeUserStatus = function(req, res, next) {
   var email = req.body.email;
-  con.query("update userdata set status = 'nonaktif' where email = ?", [email]);
+  con.query("update users set userStatus = 'nonaktif' where email = ?", [
+    email
+  ]);
 };
 
-exports.itemList = function(req, res, next) {
-  var item = req.body.item;
-  MongoClient.connect(url, function(err, db) {
-    if (err) throw err;
-    var dbo = db.db("warungku");
-    var query = { itemName: item };
-    dbo
-      .collection("catalog")
-      .find()
-      .toArray(function(err, result) {
-        if (err) throw err;
-        console.log(result);
-        db.close();
-      });
+exports.itemList = async (req, res, next) => {
+  await Product.find({}, (err, products) => {
+    if (err) {
+      res.send(err);
+    } else {
+      res.send(products);
+    }
   });
 };
 
-exports.transactionList = function(req, res, next) {
-  var transaction = req.body.transaction;
-  MongoClient.connect(url, function(err, db) {
-    if (err) throw err;
-    var dbo = db.db("warungku");
-    var query = { transactionID: transaction };
-    dbo
-      .collection("transaction")
-      .find()
-      .toArray(function(err, result) {
-        if (err) throw err;
-        console.log(result);
-        db.close();
-      });
+exports.cart = async (req, res, next) => {
+  const cartId = "";
+  await Cart.findById(cartId, (err, cart) => {
+    if (err) {
+      console.log(err);
+    } else {
+      res.render("admin/cart", { cart: cart });
+    }
   });
 };
+
+// exports.carts = async (req, res, next) => {
+//   await Cart.find({}, (err, docs) => {
+//     if (err) {
+//       console.log(err);
+//     } else {
+//       console.log(docs);
+//     }
+//   });
+// };
 
 exports.viewReport = function(req, res, next) {
   var reportID = req.body.reportID;
-  con.query("select * from report where reportID = ?", [reportID], function(
+  con.query("select * from complain where complainID = ?", [reportID], function(
     result,
     err
   ) {
@@ -74,6 +68,50 @@ exports.viewReport = function(req, res, next) {
       var reportSender = result[0].sender;
       var reportReciever = result[0].reciever;
       var reportMessage = result[0].message;
+    }
+  });
+};
+
+exports.updateCart = async (req, res, next) => {
+  const cartId = "";
+  await Cart.findById(cartId, async (err, cart) => {
+    const shippingPartner = cart.shipping.shippingPartner;
+    const contactShipping = cart.shipping.shippingPartner.contact;
+    shipping.shippingStatus = "";
+    shippingPartner.resiNumber = "";
+    shippingPartner.estimationTime = "";
+    contactShipping.name = "";
+    contactShipping.phoneNumber = "";
+    await cart.save((err, cart) => {
+      if (err) {
+        console.log(err);
+      } else {
+        res.render("admin/cart", { cart: cart });
+      }
+    });
+  });
+};
+
+exports.transaction = async (req, res, next) => {
+  await Cart.find({ status: "finish" }, async (err, cart) => {
+    if (err) {
+    } else {
+      let cartLength = cart.length;
+      for (let i = 0; i <= cartLength; i++) {
+        totalRevenue += cart[i].totalPrice;
+        totalOrder += cart[i].qty;
+      }
+      await Product.find({}, async (err, product) => {
+        let productLength = product.length;
+        for (let i = 0; i <= productLength; i++) {
+          totalProduct += product[i].qty;
+        }
+      });
+      res.render("admin/panel", {
+        totalRevenue: totalRevenue,
+        totalOrder: totalOrder,
+        totalProduct: totalProduct
+      });
     }
   });
 };

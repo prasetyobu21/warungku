@@ -22,13 +22,73 @@ const cartSchema = new Schema({
   totalPrice: {
     type: Number
   },
-  statusPayment: {
-    type: String,
-    default: "Belum Bayar"
+  qty: {
+    type: Number,
+    default: 1
   },
-  statusShipping: {
-    type: String,
-    default: "Order sedang diteruskan ke agen"
+  payment: {
+    status: {
+      type: String,
+      default: "Belum Bayar"
+    },
+    paymentType: {
+      partner: {
+        type: String
+      },
+      paymentId: {
+        type: String
+      },
+      installment: {
+        duration: {
+          type: String
+        },
+        pricePerMonth: {
+          type: Number
+        },
+        currentMonth: {
+          type: Number
+        }
+      }
+    }
+  },
+  shipping: {
+    shippingType: {
+      type: String
+    },
+    shippingPartner: {
+      name: {
+        type: String
+      },
+      resiNumber: {
+        type: String
+      },
+      weight: {
+        type: Number //in KG
+      },
+      price: {
+        type: Number
+      },
+      destination: {
+        type: String
+      },
+      contact: {
+        name: {
+          type: String
+        },
+        phoneNumber: {
+          type: String
+        }
+      },
+      estimationTime: {
+        type: Number
+      }
+    },
+    shippingStatus: {
+      type: String
+    }
+  },
+  status: {
+    type: String
   },
   expiredDate: {
     type: Date,
@@ -37,36 +97,8 @@ const cartSchema = new Schema({
   date: {
     type: Date,
     default: Date.now()
-  },
-  paymentId: {
-    type: String
   }
 });
 
 const CartModel = mongoose.model("Cart", cartSchema);
 module.exports = CartModel;
-
-// module.exports = function Cart(oldCart) {
-//   this.items = oldCart.items || {};
-//   this.totalQty = oldCart.totalQty || 0;
-//   this.totalPrice = oldCart.totalPrice || 0;
-
-//   this.add = (item, id) => {
-//     let storedItem = this.items[id];
-//     if (!storedItem) {
-//       storedItem = this.items[id] = { item: item, qty: 0, price: 0 };
-//     }
-//     storedItem.qty++;
-//     storedItem.price = storedItem.item.price * storedItem.qty;
-//     this.totalQty++;
-//     this.totalPrice += storedItem.item.price;
-//   };
-
-//   this.generateArray = () => {
-//     let arr = [];
-//     for (let id in this.items) {
-//       arr.push(this.items[id]);
-//     }
-//     return arr;
-//   };
-// };

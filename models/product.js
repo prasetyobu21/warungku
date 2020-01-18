@@ -1,17 +1,29 @@
 const mongoose = require("mongoose");
 
-const productSchema = mongoose.Schema({
+const Schema = mongoose.Schema;
+
+const productSchema = new Schema({
   name: {
     type: String
   },
   image: {
-    type: String
+    type: Buffer
   },
   price: {
     type: Number
   },
-  seller: {
+  qty: {
+    type: Number
+  },
+  sold: {
+    type: Number
+  },
+  category: {
     type: String
+  },
+  seller: {
+    type: Schema.ObjectId,
+    ref: "User"
   },
   date: {
     type: Date,
