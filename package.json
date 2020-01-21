@@ -3,16 +3,24 @@
   "version": "0.0.0",
   "private": true,
   "scripts": {
-    "start": "node ./bin/www"
+    "start": "nodemon ./bin/www"
   },
   "dependencies": {
+    "body-parser": "^1.19.0",
     "cookie-parser": "^1.4.4",
     "debug": "^2.6.9",
+    "dhcp": "^0.2.18",
     "express": "^4.16.4",
     "express-handlebars": "^3.1.0",
+    "express-session": "^1.17.0",
     "hbs": "^4.0.6",
     "http-errors": "^1.6.3",
+    "mongodb": "^3.4.1",
+    "mongoose": "^5.7.5",
+    "mongose": "0.0.2-security",
     "morgan": "^1.9.1",
-    "nodemon": "^1.19.4"
+    "mysql": "^2.17.1",
+    "nodemon": "^1.19.4",
+    "req": "^0.1.4"
   }
 }

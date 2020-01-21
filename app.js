@@ -6,9 +6,16 @@ var logger = require("morgan");
 var expressHbs = require("express-handlebars");
 var indexRouter = require("./routes/index");
 var usersRouter = require("./routes/users");
-
 var app = express();
-
+var session = require("express-session");
+app.use(
+  session({
+    secret: "qwerty",
+    resave: true,
+    saveUninitialized: true
+    // cookie: { maxAge: 60000 }
+  })
+);
 // view engine setup
 app.engine(".hbs", expressHbs({ defaultLayout: "layout", extname: ".hbs" }));
 app.set("view engine", ".hbs");
