@@ -8,6 +8,7 @@ exports.showProducts = (req, res, next) => {
       console.log(err);
     } else {
       res.render("index", { title: "home", products: products });
+      // res.send(JSON.stringify(products.length));
     }
   });
 };
