@@ -1,0 +1,67 @@
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+
+<script>
+    function loginAgen() {
+        var email = $('.userEmail').val();
+        var password = $('.userPassword').val();
+        $.ajax({
+            url: '/',
+            type: 'POST',
+            contentType: 'application/json',
+            data: JSON.stringify({
+                'email': email,
+                'password': password
+            })
+        }).done(function () {
+            //window.location.assign('/agen')
+        })
+    }
+
+    function loginWarung() {
+        var email = $('.userEmail').val();
+        var password = $('.userPassword').val();
+        $.ajax({
+            url: '/',
+            type: 'POST',
+            contentType: 'application/json',
+            data: JSON.stringify({
+                'email': email,
+                'password': password
+            })
+        }).done(function () {
+            //window.location.assign('/warung')
+        })
+
+    }
+</script>
+<div class="card mx-auto" style="width: 500px; margin-top:200px">
+    <div class="card-body">
+        <div class="row">
+            <h1 class="mx-auto">WarungKu Login</h1>
+        </div>
+        <form action="/signin" method="POST">
+            <div class="row" style="margin-top: 50px;">
+                <div class="input-group mb-3">
+                    <div class="input-group-prepend">
+
+                    </div>
+                    <input name="email" type="text" class="userEmail form-control" aria-label="Sizing example input"
+                        aria-describedby="inputGroup-sizing-default" placeholder="Email or Username">
+                </div>
+
+                <div class="input-group mb-3">
+                    <div class="input-group-prepend">
+
+                    </div>
+                    <input name="password" type="password" class="userPassword form-control" placeholder="Password"
+                        aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default">
+                </div>
+            </div>
+            <div class="row">
+                <a class="mx-auto">
+                    <input type="submit" class="btn btn-primary" value="login">
+                </a>
+            </div>
+        </form>
+    </div>
+</div>
