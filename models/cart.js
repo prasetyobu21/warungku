@@ -3,19 +3,15 @@ const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 
 const cartSchema = new Schema({
-  buyer: {
-    type: String
+  user: {
+    type: Schema.ObjectId,
+    ref: "User"
   },
-  product: [
+  order: [
     {
-      name: {
-        type: String
-      },
-      price: {
-        type: Number
-      },
-      seller: {
-        type: String
+      product: {
+        type: Schema.ObjectId,
+        ref: "Product"
       },
       qty: {
         type: Number,
@@ -23,13 +19,76 @@ const cartSchema = new Schema({
       }
     }
   ],
-  statusPayment: {
-    type: String,
-    default: "Belum Bayar"
+  totalPrice: {
+    type: Number
   },
-  statusShipping: {
-    type: String,
-    default: "Order sedang diteruskan ke agen"
+  qty: {
+    type: Number,
+    default: 1
+  },
+  payment: {
+    status: {
+      type: String,
+      default: "Belum Bayar"
+    },
+    paymentType: {
+      partner: {
+        type: String
+      },
+      paymentId: {
+        type: String
+      },
+      installment: {
+        duration: {
+          type: String
+        },
+        pricePerMonth: {
+          type: Number
+        },
+        currentMonth: {
+          type: Number
+        }
+      }
+    }
+  },
+  shipping: {
+    shippingType: {
+      type: String
+    },
+    shippingPartner: {
+      name: {
+        type: String
+      },
+      resiNumber: {
+        type: String
+      },
+      weight: {
+        type: Number //in KG
+      },
+      price: {
+        type: Number
+      },
+      destination: {
+        type: String
+      },
+      contact: {
+        name: {
+          type: String
+        },
+        phoneNumber: {
+          type: String
+        }
+      },
+      estimationTime: {
+        type: Number
+      }
+    },
+    shippingStatus: {
+      type: String
+    }
+  },
+  status: {
+    type: String
   },
   expiredDate: {
     type: Date,
@@ -42,5 +101,4 @@ const cartSchema = new Schema({
 });
 
 const CartModel = mongoose.model("Cart", cartSchema);
-
 module.exports = CartModel;

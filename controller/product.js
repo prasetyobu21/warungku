@@ -1,122 +1,90 @@
 const Product = require("../models/product");
 const User = require("../models/user");
-const Cart = require("../models/cart");
 const session = require("express-session");
 
 exports.showProducts = (req, res, next) => {
-  Product.find({}, (req, products) => {
-    res.send(products);
+  Product.find({}, (err, products) => {
+    if (err) {
+      console.log(err);
+    } else {
+      res.render("client/home", { products: products });
+    }
   });
 };
 
-exports.addProducts = (req, res, next) => {
+exports.showProduct = async (req, res, next) => {
+  const productId = "";
+  await Product.findById(productId, (err, product) => {
+    if (err) {
+      res.send(err);
+    } else {
+      res.render("client/product", { product: product });
+    }
+  });
+};
+
+exports.addProduct = async (req, res, next) => {
   if (session.login && session.id) {
-    console.log(req.user);
-    const { name, image, price } = req.body;
+    // console.log(req.user);
+    const { name, image, price, qty, sold, category } = req.body;
     const product = new Product({
       name: name,
       image: image,
       price: price,
+      qty: qty,
+      sold: sold,
+      category: category,
       seller: session.userID
     });
-    product.save((err, docs) => {
+    await product.save((err, docs) => {
       if (err) {
-        console.log(err);
+        res.send(err);
       } else {
-        console.log(docs);
+        res.send(docs);
       }
     });
-    res.redirect("/warung");
+    res.redirect("/agen");
   } else {
     res.redirect("/signin");
   }
 };
 
-exports.addToCart = (req, res, next) => {
-  if (session.login && session.id) {
-    if (session.cart == undefined) {
-      const productId = req.body.productId;
-      Product.findOne({ _id: productId }, (req, product) => {
-        const cart = new Cart({
-          buyer: session.id,
-          product: [
-            {
-              _id: productId,
-              name: product.name,
-              seller: product.seller,
-              price: product.price
-            }
-          ]
-        });
-        cart.save((err, docs) => {
-          if (err) {
-            console.log(err);
-          } else {
-            session.cart = docs._id;
-            res.send(docs);
-            console.log(docs);
-          }
-        });
-      });
+exports.deleteProduct = async (req, res, next) => {
+  const productId = "";
+  const oldUrl = req.url;
+  await Product.deleteOne({ _id: productId }, err => {
+    if (err) {
+      res.render(oldUrl, { message: "Error Found" });
     } else {
-      const productId = req.body.productId;
-      Product.findOne({ _id: productId }, (req, product) => {
-        Cart.findOneAndUpdate(
-          { _id: session.cart },
-          {
-            $push: {
-              product: {
-                _id: productId,
-                name: product.name,
-                seller: product.seller,
-                price: product.price
-              }
-            }
-          },
-          (err, docs) => {
-            if (err) {
-              res.send(err);
-            } else {
-              res.send(docs);
-            }
-          }
-        );
-      });
+      res.render(oldUrl, { message: "Deleted" });
     }
-  } else {
-    res.redirect("/signin");
-  }
+  });
 };
 
-exports.checkout = (req, res, next) => {
-  if (session.login && session.id) {
-    if (session.cart == undefined) {
-      res.redirect("/");
+exports.updateProduct = async (req, res, next) => {
+  const productId = "";
+  const oldUrl = req.url;
+  await Product.findById(productId, async (err, product) => {
+    if (err) {
+      res.send(err);
     } else {
-      Cart.aggregate(
-        [
-          {
-            $match: { $and: [{ _id: session.cart }] }
-          },
-          {
-            $group: {
-              _id: null,
-              totalPrice: {
-                $sum: "$price"
-              }
-            }
-          }
-        ],
-        (err, result) => {
-          if (err) {
-            res.send(err);
-          } else {
-            res.send(result);
-          }
+      const { name, image, price, qty, sold, category } = req.body;
+      const product = new Product({
+        name: name,
+        image: image,
+        price: price,
+        qty: qty,
+        sold: sold,
+        category: category,
+        seller: session.userID
+      });
+      await product.save((err, docs) => {
+        if (err) {
+          res.render(oldUrl, { message: "Error Found" });
+        } else {
+          res.render(oldUrl, { message: "Product Updated" });
         }
-      );
+      });
     }
-  } else {
-    res.redirect("/signin");
-  }
+  });
 };

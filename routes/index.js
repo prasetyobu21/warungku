@@ -1,19 +1,18 @@
 const express = require("express");
 const router = express.Router();
-const app = express();
-const hbs = require("hbs");
-const mongo = require("mongoose");
-app.set("view engine", "hbs");
-const mysql = require("mysql");
-const db = require("../dbSql");
 const session = require("express-session");
 const userController = require("../controller/user");
 const productController = require("../controller/product");
+const cartController = require("../controller/cart");
+const adminController = require("../controller/admin");
 /* GET home page. */
 
+//User Routing
 router.get("/signin", function(req, res, next) {
   res.render("signin");
 });
+
+router.post("/signin", userController.loginUser);
 
 router.get("/signup", (req, res) => {
   res.render("signup");
@@ -21,13 +20,6 @@ router.get("/signup", (req, res) => {
 
 router.post("/signup", userController.signupUser);
 
-router.get("/admin", function(req, res, next) {
-  res.render("loginAdmin");
-});
-
-router.post("/signin", userController.loginUser);
-
-router.post("/loginAdmin", userController.loginAdmin);
 router.get("/auth", function(req, res, next) {
   if (session.status == "agen") {
     session.login = true;
@@ -56,6 +48,14 @@ router.get("/agen", function(req, res, next) {
   }
 });
 
+// Admin Routing
+
+router.get("/admin", function(req, res, next) {
+  res.render("loginAdmin");
+});
+
+router.post("/loginAdmin", userController.loginAdmin);
+
 router.get("/adminPanel", function(req, res, next) {
   if (session.login && session.status == "admin") {
     res.render("admin/dashboard");
@@ -64,9 +64,25 @@ router.get("/adminPanel", function(req, res, next) {
   }
 });
 
+router.get("/getCart", adminController.cart);
+router.post("/updateCart", adminController.updateCart);
+router.get("/transaction", adminController.transaction);
+
+// Product Routing
 router.get("/", productController.showProducts);
-router.post("/addProduct", productController.addProducts);
-router.post("/addToCart", productController.addToCart);
-router.get("/checkout", productController.checkout);
+router.get("/showProduct", productController.showProduct);
+router.post("/addProduct", productController.addProduct);
+router.post("/deleteProduct", productController.deleteProduct);
+router.post("/updateProduct", productController.updateProduct);
+
+// Cart Routing
+router.get("/carts", cartController.carts);
+router.get("/cart", cartController.cart);
+router.post("/addToCart", cartController.addToCart);
+router.post("/decreaseOne", cartController.decreaseOne);
+router.get("/removeFromCart", cartController.removeFromCart);
+router.get("/removeCart", cartController.removeCart);
+router.post("/checkout", cartController.checkout);
+router.post("/installment", cartController.installment);
 
 module.exports = router;

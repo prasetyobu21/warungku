@@ -48,11 +48,11 @@ exports.loginAdmin = (req, res, next) => {
 };
 
 exports.signupUser = (req, res, next) => {
-  const { username, email, password, userStatus } = req.body;
-  const userData = [username, email, password, userStatus];
+  const { email, password, userStatus } = req.body;
+  const userData = [email, password, userStatus];
   console.log(userData);
   con.query(
-    "INSERT INTO users (userName, userEmail, userPassword, userStatus) VALUES (?,?,?,?)",
+    "INSERT INTO users ( userEmail, userPassword, userStatus) VALUES (?,?,?)",
     userData,
     (err, result) => {
       if (err) {
