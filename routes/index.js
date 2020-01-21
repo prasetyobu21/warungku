@@ -64,6 +64,8 @@ router.get("/adminPanel", function(req, res, next) {
   }
 });
 
+router.get("/adminTransactionList", adminController.transaction);
+
 router.get("/getCart", adminController.cart);
 router.get("/admin/userList", adminController.userList);
 router.post("/updateCart", adminController.updateCart);

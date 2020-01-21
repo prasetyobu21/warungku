@@ -134,13 +134,11 @@ exports.dataTransaction = async (req, res, next) => {
 };
 
 exports.transaction = async (req, res, next) => {
-  await Cart.find({ status: "finish" }, (err, cart) => {
+  await Cart.find({}, (err, cart) => {
     if (err) {
       console.log(err);
     } else {
-      res.render("admin/lsajbd", {
-        cart: cart
-      });
+      res.render("admin/transactionList", { cart: cart });
     }
   });
 };
