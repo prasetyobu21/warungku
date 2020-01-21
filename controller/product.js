@@ -7,7 +7,7 @@ exports.showProducts = (req, res, next) => {
     if (err) {
       console.log(err);
     } else {
-      res.render("client/home", { products: products });
+      res.render("index", { title: "home", products: products });
     }
   });
 };

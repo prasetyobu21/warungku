@@ -114,7 +114,7 @@ exports.dataTransaction = async (req, res, next) => {
           totalProduct += product[i].qty;
         }
       });
-      res.render("admin/panel", {
+      res.send({
         totalRevenue: totalRevenue,
         totalOrder: totalOrder,
         totalProduct: totalProduct
