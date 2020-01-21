@@ -14,7 +14,7 @@ exports.showProducts = (req, res, next) => {
 };
 
 exports.showProduct = async (req, res, next) => {
-  const productId = "";
+  const productId = req.params.id;
   await Product.findById(productId, (err, product) => {
     if (err) {
       res.send(err);

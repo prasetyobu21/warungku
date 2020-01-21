@@ -65,12 +65,13 @@ router.get("/adminPanel", function(req, res, next) {
 });
 
 router.get("/getCart", adminController.cart);
+router.get("/admin/userList", adminController.userList);
 router.post("/updateCart", adminController.updateCart);
 router.get("/transaction", adminController.transaction);
 
 // Product Routing
 router.get("/", productController.showProducts);
-router.get("/showProduct", productController.showProduct);
+router.get("/showProduct/:id", productController.showProduct);
 router.post("/addProduct", productController.addProduct);
 router.post("/deleteProduct", productController.deleteProduct);
 router.post("/updateProduct", productController.updateProduct);

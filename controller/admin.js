@@ -5,19 +5,29 @@ const session = require("express-session");
 
 var con = db.conn;
 
+// exports.userList = function(req, res, next) {
+//   con.query("select * from users"),
+//     function(err, result) {
+//       if (result.length > 0) {
+//         var email = result[0].email;
+//         var type = result[0].userType;
+//         var address = result[0].userAddress;
+//         var phone = result[0].phoneNumber;
+//         var status = result[0].userStatus;
+//       } else if (err) {
+//         console.log(err);
+//       }
+//     };
+// };
+
 exports.userList = function(req, res, next) {
-  con.query("select * from users"),
-    function(err, result) {
-      if (result.length > 0) {
-        var email = result[0].email;
-        var type = result[0].userType;
-        var address = result[0].userAddress;
-        var phone = result[0].phoneNumber;
-        var status = result[0].userStatus;
-      } else if (err) {
-        console.log(err);
-      }
-    };
+  const result = con.query("select * from users", (err, result, field) => {
+    if (err) {
+      res.send("Hilang");
+    } else {
+      res.render("admin/userlist", { result: result });
+    }
+  });
 };
 
 exports.changeUserStatus = function(req, res, next) {
