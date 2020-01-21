@@ -27,8 +27,14 @@ exports.userList = function(req, res, next) {
 
 exports.changeUserStatus = function(req, res, next) {
   var email = req.body.email;
+  var information = req.body.information;
   con.query("update users set userStatus = 'nonaktif' where email = ?", [
     email
+  ]);
+
+  con.query("update users set information = ? where email = ?", [
+    email,
+    information
   ]);
 };
 
@@ -64,6 +70,17 @@ exports.transactionList = function(req, res, next) {
         db.close();
       });
   });
+};
+
+exports.totalTransaction = function(req, res, next) {
+  con.query("select count (userEmail) as totalUser from users"),
+    function(err, result) {
+      if (result.length > 0) {
+        var totalUser = result[0].totalUser;
+      } else if (err) {
+        throw err;
+      }
+    };
 };
 
 exports.viewReport = function(req, res, next) {
