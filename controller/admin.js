@@ -22,8 +22,14 @@ exports.userList = function(req, res, next) {
 
 exports.changeUserStatus = function(req, res, next) {
   var email = req.body.email;
+  var information = req.body.information;
   con.query("update users set userStatus = 'nonaktif' where email = ?", [
     email
+  ]);
+
+  con.query("update users set information = ? where email = ?", [
+    email,
+    information
   ]);
 };
 
@@ -48,15 +54,16 @@ exports.cart = async (req, res, next) => {
   });
 };
 
-// exports.carts = async (req, res, next) => {
-//   await Cart.find({}, (err, docs) => {
-//     if (err) {
-//       console.log(err);
-//     } else {
-//       console.log(docs);
-//     }
-//   });
-// };
+exports.totalTransaction = function(req, res, next) {
+  con.query("select count (userEmail) as totalUser from users"),
+    function(err, result) {
+      if (result.length > 0) {
+        var totalUser = result[0].totalUser;
+      } else if (err) {
+        throw err;
+      }
+    };
+};
 
 exports.viewReport = function(req, res, next) {
   var reportID = req.body.reportID;
@@ -92,7 +99,7 @@ exports.updateCart = async (req, res, next) => {
   });
 };
 
-exports.transaction = async (req, res, next) => {
+exports.dataTransaction = async (req, res, next) => {
   await Cart.find({ status: "finish" }, async (err, cart) => {
     if (err) {
     } else {
@@ -111,6 +118,18 @@ exports.transaction = async (req, res, next) => {
         totalRevenue: totalRevenue,
         totalOrder: totalOrder,
         totalProduct: totalProduct
+      });
+    }
+  });
+};
+
+exports.transaction = async (req, res, next) => {
+  await Cart.find({ status: "finish" }, (err, cart) => {
+    if (err) {
+      console.log(err);
+    } else {
+      res.render("admin/lsajbd", {
+        cart: cart
       });
     }
   });
