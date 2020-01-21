@@ -3,22 +3,25 @@ const Cart = require("../models/cart");
 const session = require("express-session");
 
 exports.carts = async (req, res, next) => {
-  await Cart.find({}, (err, docs) => {
+  await Cart.find({}, (err, carts) => {
     if (err) {
       console.log(err);
     } else {
-      res.render("admin/cart", { carts: carts });
+      // res.render("admin/cart", { carts: carts });
+      res.send(carts);
     }
   });
 };
 
 exports.cart = async (req, res, next) => {
-  let cartId = "";
+  let cartId = "5e1c207eb9873b4824472471";
   await Cart.findById(cartId, (err, cart) => {
     if (err) {
-      res.render("client/warung/cart", { message: "Empty Cart" });
+      // res.render("client/warung/cart", { message: "Empty Cart" });
+      res.send(err);
     } else {
-      res.render("client/warung/cart", { cart: cart });
+      // res.render("client/warung/cart", { cart: cart });
+      res.render("client/warung/checkout", { cart: cart });
     }
   });
 };
@@ -65,7 +68,7 @@ exports.addToCart = async (req, res, next) => {
         });
       } else {
         res.render("client/home", {
-          products: products,
+          product: product,
           message: "Product Kosong"
         });
       }
@@ -165,63 +168,66 @@ exports.checkout = async (req, res, next) => {
   const stripe = require("stripe")(
     "sk_test_uDIFUkLi6pqMa1M4iG78eAKq004N78CImt"
   );
+  // var elements = stripe.elements();
 
   await Cart.findById(cartId, (err, cart) => {
     if (err) {
       console.log("Cart not found");
     } else {
-      const {
-        shippingType,
-        partner,
-        price,
-        estimation,
-        destination
-      } = req.body;
-      let totalPrice = cart.totalPrice + price;
+      // const {
+      //   shippingType,
+      //   partner,
+      //   price,
+      //   estimation,
+      //   destination
+      // } = req.body;
+      // let totalPrice = cart.totalPrice + price;
       stripe.charges.create(
         {
-          amount: totalPrice * 100,
+          amount: cart.totalPrice * 100,
           currency: "idr",
-          source: "tok_mastercard",
+          source: req.body.stripeToken,
           description: "Test Charge"
         },
         async (err, charge) => {
           if (err) {
             console.log(err);
           } else {
-            cart.paymentType.paymentId = charge.id;
-            cart.paymentType.partner = "Stripe";
+            cart.payment.paymentType.paymentId = charge.id;
+            cart.payment.paymentType.partner = "Stripe";
             cart.payment.status = "Sudah Bayar";
             cart.status = "Sedang diteruskan ke agent";
-            cart.shipping.shippingType = shippingType;
-            cart.shipping.shippingPartner = partner;
-            cart.shipping.estimation = estimation;
-            cart.shipping.destination = destination;
+            // cart.shipping.shippingType = shippingType;
+            // cart.shipping.shippingPartner = partner;
+            // cart.shipping.estimation = estimation;
+            // cart.shipping.destination = destination;
             await cart.save(async (err, cart) => {
               if (err) {
                 console.log(err);
               } else {
-                let productLength = cart.order.length;
-                let product = cart.order;
-                for (let i = 0; i <= productLength; i++) {
-                  Product.findById(product[i].id, async (err, product) => {
-                    if (err) {
-                      console.log(err);
-                    } else {
-                      product.qty -= 1;
-                      product.sold += 1;
-                      await product.save(err => {
-                        if (err) {
-                          console.log(err);
-                        } else {
-                          res.render("client/warung/order", {
-                            message: "Order forward to agent"
-                          });
-                        }
-                      });
-                    }
-                  });
-                }
+                res.send("Success");
+                // let productLength = cart.order.length;
+                // let product = cart.order;
+                // for (let i = 0; i <= productLength; i++) {
+                //   Product.findById(product[i].id, async (err, product) => {
+                //     if (err) {
+                //       console.log(err);
+                //     } else {
+                //       product.qty -= 1;
+                //       product.sold += 1;
+                //       await product.save(err => {
+                //         if (err) {
+                //           console.log(err);
+                //         } else {
+                //           // res.render("client/warung/order", {
+                //           //   message: "Order forward to agent"
+                //           // });
+                //           res.send("Success");
+                //         }
+                //       });
+                //     }
+                //   });
+                // }
               }
             });
           }

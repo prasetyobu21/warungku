@@ -8,7 +8,7 @@ exports.showProducts = (req, res, next) => {
       console.log(err);
     } else {
       res.render("index", { title: "home", products: products });
-      // res.send(JSON.stringify(products.length));
+      // res.send(products);
     }
   });
 };
@@ -26,22 +26,20 @@ exports.showProduct = async (req, res, next) => {
 
 exports.addProduct = async (req, res, next) => {
   if (session.login && session.id) {
-    // console.log(req.user);
-    const { name, image, price, qty, sold, category } = req.body;
+    const { name, image, price, qty, category } = req.body;
     const product = new Product({
       name: name,
       image: image,
       price: price,
       qty: qty,
-      sold: sold,
       category: category,
-      seller: session.userID
+      seller: session.id
     });
     await product.save((err, docs) => {
       if (err) {
-        res.send(err);
+        console.log(err);
       } else {
-        res.send(docs);
+        console.log(docs);
       }
     });
     res.redirect("/agen");
