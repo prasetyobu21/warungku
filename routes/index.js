@@ -5,6 +5,7 @@ const userController = require("../controller/user");
 const productController = require("../controller/product");
 const cartController = require("../controller/cart");
 const adminController = require("../controller/admin");
+
 /* GET home page. */
 
 //User Routing
@@ -72,6 +73,9 @@ router.get("/transaction", adminController.transaction);
 // Product Routing
 router.get("/", productController.showProducts);
 router.get("/showProduct/:id", productController.showProduct);
+router.get("/addProduct", (req, res) => {
+  res.render("client/agen/addProduct", { title: "Add Product" });
+});
 router.post("/addProduct", productController.addProduct);
 router.post("/deleteProduct", productController.deleteProduct);
 router.post("/updateProduct", productController.updateProduct);
@@ -83,6 +87,7 @@ router.post("/addToCart", cartController.addToCart);
 router.post("/decreaseOne", cartController.decreaseOne);
 router.get("/removeFromCart", cartController.removeFromCart);
 router.get("/removeCart", cartController.removeCart);
+router.get("/checkout", cartController.cart);
 router.post("/checkout", cartController.checkout);
 router.post("/installment", cartController.installment);
 
