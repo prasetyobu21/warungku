@@ -1,18 +1,31 @@
+{{>navbarWarung}}
+
 <div class="container">
 
+    {{#if message}}
+    <div class="row">
+        <h1>{{message}}</h1>
+    </div>
+    {{else}}
+    {{/if}}
     <div class="row my-3">
+
         {{# each products}}
 
-        <div class="col-sm">
-            <div class="card" style="width: 18rem;">
-                <img class="card-img-top" src="{{image}}" alt="Card image cap" style="height: 200px;">
+        <div class="col-sm-2" style="margin-right: 20px; margin-top: 10px;">
+            <div class="card" style="width: 200px;">
+                <img class="card-img-top mx-auto" src="{{image}}" alt="Card image cap"
+                    style="width: 100px;height: 150px;">
                 <div class="card-body">
-                    <h5 class="card-title"><a href="/product/{{id}}"
-                            style="text-decoration: none; color:black">{{name}}</a></h5>
-                    <p class="card-text">Rp {{price}}</p>
-                    <p class="card-text">QTY: {{qty}}</p>
-                    <p class="card-text"><i>{{seller.email}}</i></p>
-                    <a href="/addToCart/{{id}}" class="btn btn-warning">Add to Cart</a>
+                    <p class="card-title m-0"><a href="/product/{{id}}"
+                            style="text-decoration: none; color:black; font-size: small;"><b>{{name}}</b></a>
+                    </p>
+                    <p class="card-text m-0" style="font-size: small;">Rp {{price}}</p>
+                    <p class="card-text m-0" style="font-size: small;">QTY: {{qty}}</p>
+                    <p class=" card-text m-0" style="font-size: small; color:gray"><i>{{seller.email}}</i></p>
+                    <a href="/addToCart/{{id}}" class="btn btn-warning">
+                        <p class="card-text m-0" style="font-size: small;">Add To Cart</p>
+                    </a>
                 </div>
             </div>
         </div>

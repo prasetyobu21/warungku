@@ -34,7 +34,8 @@ exports.loginAdmin = (req, res, next) => {
       if (result.length > 0) {
         session.userID = result[0].userEmail;
         session.status = result[0].userStatus;
-        if (session.status == "admin") {
+        session.userType = result[0].userType;
+        if (session.userType == "admin") {
           session.login = true;
           res.redirect("/adminPanel");
         } else {

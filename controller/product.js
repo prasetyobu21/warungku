@@ -7,7 +7,12 @@ exports.showProducts = async (req, res, next) => {
     if (err) {
       console.log(err);
     } else {
-      res.render("index", { title: "home", products: products });
+      res.render("index", {
+        title: "home",
+        products: products,
+        message: session.message
+      });
+      session.message = null;
       // res.send(products);
     }
   });

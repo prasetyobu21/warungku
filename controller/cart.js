@@ -1,6 +1,7 @@
 const Product = require("../models/product");
 const Cart = require("../models/cart");
 const User = require("../models/user");
+const Shipping = require("../models/shipping");
 const session = require("express-session");
 
 exports.carts = async (req, res, next) => {
@@ -16,13 +17,22 @@ exports.carts = async (req, res, next) => {
 
 exports.cart = (req, res, next) => {
   let cartId = "5e28299523b1700b9869ddbd";
-  Cart.findById(cartId, (err, cart) => {
+  Cart.findOne({ _id: cartId, status: "In Cart" }, async (err, cart) => {
+    // Sedang diteruskan ke agent
     if (err) {
-      res.render("client/warung/cart", { message: "Empty Cart" });
       // res.send("Error");
+      console.log(err);
     } else {
-      res.render("client/warung/cart", { cart: cart });
-      // res.send(cart);
+      if (cart == null) {
+        // res.send("No Cart");
+        res.render("client/warung/noCart");
+      } else {
+        await Shipping.find({}, (err, shipping) => {
+          if (err) console.log(err);
+          res.render("client/warung/cart", { cart: cart, shipping: shipping });
+          // res.send(cart);
+        });
+      }
     }
   });
 };
@@ -188,8 +198,16 @@ exports.removeCart = async (req, res, next) => {
   });
 };
 
+exports.checkPage = async (req, res, next) => {
+  let cartId = "5e28299523b1700b9869ddbd";
+  await Cart.findById(cartId, (err, cart) => {
+    if (err) console.log(err);
+    res.render("client/warung/checkout", { cart: cart });
+  });
+};
+
 exports.checkout = async (req, res, next) => {
-  let cartId = "5e1c207eb9873b4824472471";
+  let cartId = "5e28299523b1700b9869ddbd";
   const stripe = require("stripe")(
     "sk_test_uDIFUkLi6pqMa1M4iG78eAKq004N78CImt"
   );
@@ -199,14 +217,6 @@ exports.checkout = async (req, res, next) => {
     if (err) {
       console.log("Cart not found");
     } else {
-      // const {
-      //   shippingType,
-      //   partner,
-      //   price,
-      //   estimation,
-      //   destination
-      // } = req.body;
-      // let totalPrice = cart.totalPrice + price;
       stripe.charges.create(
         {
           amount: cart.totalPrice * 100,
@@ -218,41 +228,15 @@ exports.checkout = async (req, res, next) => {
           if (err) {
             console.log(err);
           } else {
-            cart.payment.paymentType.paymentId = charge.id;
-            cart.payment.paymentType.partner = "Stripe";
             cart.payment.status = "Sudah Bayar";
             cart.status = "Sedang diteruskan ke agent";
-            // cart.shipping.shippingType = shippingType;
-            // cart.shipping.shippingPartner = partner;
-            // cart.shipping.estimation = estimation;
-            // cart.shipping.destination = destination;
             await cart.save(async (err, cart) => {
               if (err) {
                 console.log(err);
               } else {
-                res.send("Success");
-                // let productLength = cart.order.length;
-                // let product = cart.order;
-                // for (let i = 0; i <= productLength; i++) {
-                //   Product.findById(product[i].id, async (err, product) => {
-                //     if (err) {
-                //       console.log(err);
-                //     } else {
-                //       product.qty -= 1;
-                //       product.sold += 1;
-                //       await product.save(err => {
-                //         if (err) {
-                //           console.log(err);
-                //         } else {
-                //           // res.render("client/warung/order", {
-                //           //   message: "Order forward to agent"
-                //           // });
-                //           res.send("Success");
-                //         }
-                //       });
-                //     }
-                //   });
-                // }
+                // res.send("Success");
+                session.message = "Success";
+                res.redirect("/");
               }
             });
           }

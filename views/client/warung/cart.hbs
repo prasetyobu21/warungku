@@ -51,7 +51,7 @@
                 </tr>
                 {{/each}}
                 <tr>
-                    <td> </td>
+                    {{!-- <td> </td>
                     <td> </td>
                     <td> </td>
                     <td>
@@ -60,18 +60,44 @@
                     <td class="text-right">
                         <h5><strong>Rp {{cart.totalPrice}}</strong></h5>
                     </td>
-                </tr>
+                </tr> --}}
+                    {{#if cart.shipping.type.name}}
                 <tr>
                     <td> </td>
                     <td> </td>
                     <td> </td>
                     <td>
-                        <h5>Estimated shipping</h5>
+                        <h5>Shipping Fee</h5>
                     </td>
                     <td class="text-right">
-                        <h5><strong>$9.999.99</strong></h5>
+                        <h5><strong>Rp {{cart.shipping.type.price}}</strong></h5>
+                        <button type="button" class="btn btn-danger">
+                            <a href="/changeShipping/{{cart.shipping.type._id}}"
+                                style="text-decoration: none; color:black">
+                                <span class="fa fa-remove"></span> Change
+                            </a>
+                        </button>
                     </td>
                 </tr>
+                {{else}}
+                <tr>
+                    <td> </td>
+                    <td> </td>
+                    <td> </td>
+                    <td>
+                        <h5>Choose Your Shipping</h5>
+                    </td>
+                    <td class="text-right">
+                        <select class="form-control" name="shipping" id="shipping" onchange="location = this.value;">
+                            <option value="choose" disabled selected>Carier</option>
+                            {{# each shipping}}
+                            <option value="/chooseShipping/{{id}}">{{name}} - Rp {{price}}
+                            </option>
+                            {{/each}}
+                        </select>
+                    </td>
+                </tr>
+                {{/if}}
                 <tr>
                     <td> </td>
                     <td> </td>
@@ -89,12 +115,22 @@
                     <td> </td>
                     <td>
                         <button type="button" class="btn btn-warning">
-                            <span class="fa fa-shopping-cart"></span> Continue Shopping
+                            <a href="/" style="text-decoration: none; color:black">
+                                <span class="fa fa-shopping-cart"></span> Continue Shopping
+                            </a>
                         </button></td>
                     <td>
-                        <button type="button" class="btn btn-success">
+                        {{#if cart.shipping.type.name}}
+                        <button type="button" class="btn btn-warning">
+                            <a href="/checkout" style="text-decoration: none; color:black">
+                                <span class="fa fa-play"></span> Checkout
+                            </a>
+                        </button>
+                        {{else}}
+                        <button type="button" class="btn btn-success" disabled>
                             Checkout <span class="fa fa-play"></span>
                         </button></td>
+                    {{/if}}
                 </tr>
             </tbody>
         </table>

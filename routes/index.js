@@ -5,6 +5,7 @@ const userController = require("../controller/user");
 const productController = require("../controller/product");
 const cartController = require("../controller/cart");
 const adminController = require("../controller/admin");
+const shippingController = require("../controller/shipping");
 
 /* GET home page. */
 
@@ -35,6 +36,7 @@ router.get("/auth", function(req, res, next) {
 
 router.get("/warung", function(req, res, next) {
   if (session.login && session.status == "warung") {
+    console.log(session.id);
     res.render("client/warung/dashboard");
   } else {
     res.redirect("/");
@@ -71,6 +73,11 @@ router.get("/getCart", adminController.cart);
 router.get("/admin/userList", adminController.userList);
 router.post("/updateCart", adminController.updateCart);
 router.get("/transaction", adminController.transaction);
+router.get("/adminPanel", adminController.adminDashboard);
+router.get("/addShipping", (req, res) => {
+  res.render("admin/shipping", { title: "Add Shipping" });
+});
+router.post("/addShipping", shippingController.add);
 
 // Product Routing
 router.get("/", productController.showProducts);
@@ -86,11 +93,13 @@ router.post("/updateProduct", productController.updateProduct);
 router.get("/carts", cartController.carts);
 router.get("/cart", cartController.cart);
 router.get("/addToCart/:id", cartController.addToCart);
+router.get("/chooseShipping/:id", shippingController.choose);
+router.get("/changeShipping/:id", shippingController.change);
 router.get("/decreaseOne/:id", cartController.decreaseOne);
 router.get("/removeFromCart/:id", cartController.removeFromCart);
 router.get("/removeCart", cartController.removeCart);
-// router.get("/checkout", cartController.cart);
-// router.post("/checkout", cartController.checkout);
+router.get("/checkout", cartController.checkPage);
+router.post("/checkout", cartController.checkout);
 router.post("/installment", cartController.installment);
 
 module.exports = router;

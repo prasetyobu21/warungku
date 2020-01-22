@@ -53,39 +53,12 @@ const cartSchema = new Schema({
     }
   },
   shipping: {
-    shippingType: {
-      type: String
+    type: {
+      type: Object
     },
-    shippingPartner: {
-      name: {
-        type: String
-      },
-      resiNumber: {
-        type: String
-      },
-      weight: {
-        type: Number //in KG
-      },
-      price: {
-        type: Number
-      },
-      destination: {
-        type: String
-      },
-      contact: {
-        name: {
-          type: String
-        },
-        phoneNumber: {
-          type: String
-        }
-      },
-      estimationTime: {
-        type: Number
-      }
-    },
-    shippingStatus: {
-      type: String
+    status: {
+      type: String,
+      default: "Sedang Disiapkan"
     }
   },
   status: {
