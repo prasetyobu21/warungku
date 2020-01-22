@@ -1,1 +1,32 @@
-{{product}}
+{{>navbarWarung}}
+
+{{!-- {{product}} --}}
+<div class="container">
+    <h1 class="titleProductMenu">PREVIEW</h1>
+    <div class="container">
+        <div class="row">
+            <div class="col-md-5">
+                <div>
+                    <img class="d-block w-100" src="{{product.image}}" alt="First slide">
+                </div>
+            </div>
+            <div class="col-md-7">
+                <p class="jenisproduct" href="">Makanan</p>
+                <h2>{{product.name}}</h2>
+                <!--Nama Product-->
+                <p class="price"><b>Harga </b><a>Rp</a>
+                    <link src=""> {{product.price}}</p>
+                <p><b>Deskripsi: </b>
+                    <p>
+                        {{product.description}}
+                    </p>
+                </p>
+                <p href="">Berkah</p>
+                <!--Nama toko-->
+            </div>
+            <div>
+                <button type="button" style="margin-top: 10%;" class="btn btn-info">Add to Chart</button>
+            </div>
+        </div>
+    </div>
+</div>

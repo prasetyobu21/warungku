@@ -1,17 +1,17 @@
 {{>navbarAdmin}}
 <div class="container">
-
-
-    <div class="list-group">
-        <div class="list-group-item list-group-item-action active">
-            <div class="d-flex w-100 justify-content-between">
-                <h5 class="mb-1">ID Pembeli</h5>
-                <small>Tanggal pembelian</small>
-            </div>
-            <p class="mb-1">Detail order</p>
-            <small>Total harga</small>
+    <div class="list-group-item list-group-item-action active">
+        <div class="d-flex w-100 justify-content-between">
+            <h5 class="mb-1">ID Pembeli</h5>
+            <small>Tanggal pembelian</small>
         </div>
-        {{# each cart}}
+        <p class="mb-1">Detail order</p>
+        <small>Total harga</small>
+    </div>
+    {{# each cart}}
+    <div class="list-group">
+
+
         <a href="#" class="list-group-item list-group-item-action">
             <div class="d-flex w-100 justify-content-between">
                 <h5 class="mb-1">{{user.email}}</h5>

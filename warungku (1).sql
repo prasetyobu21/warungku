@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1:3306
--- Generation Time: Jan 13, 2020 at 06:29 AM
+-- Generation Time: Jan 22, 2020 at 06:47 PM
 -- Server version: 10.3.20-MariaDB
 -- PHP Version: 7.3.12
 
@@ -58,9 +58,9 @@ CREATE TABLE IF NOT EXISTS `users` (
 --
 
 INSERT INTO `users` (`userEmail`, `userPassword`, `userType`, `userAddress`, `phoneNumber`, `userStatus`, `information`) VALUES
-('tyo', 'qwerty', 'warung', NULL, NULL, NULL, NULL),
-('agust', 'qwerty', 'agen', NULL, NULL, NULL, NULL),
-('admin', 'admin', 'admin', NULL, NULL, NULL, NULL);
+('tyo@warung.com', 'qwerty', 'warung', NULL, NULL, 'aktif', NULL),
+('agust@agen.com', 'qwerty', 'agen', NULL, NULL, 'aktif', NULL),
+('admin@admin.com', 'admin', 'admin', NULL, NULL, 'aktif', NULL);
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
