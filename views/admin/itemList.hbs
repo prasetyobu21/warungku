@@ -1,0 +1,18 @@
+{{>navbarAdmin}}
+
+<div class="container" style="margin-top: 100px;">
+    <div class="card-deck">
+        {{# each products}}
+        <div class="card">
+            <img src="{{image}}" class="card-img-top" alt="...">
+            <div class="card-body">
+                <h5 class="card-title">{{name}}</h5>
+                <p class="card-text">{{description}}</p>
+            </div>
+            <div class="card-footer">
+                <small class="text-muted">{{price}}</small>
+            </div>
+        </div>
+        {{/each}}
+    </div>
+</div>

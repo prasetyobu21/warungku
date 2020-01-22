@@ -1,4 +1,4 @@
-<form action="/addProduct" method="post">
+{{!-- <form action="/addProduct" method="post">
     <div class="form-group">
         <label for="email">Email address</label>
         <input type="email" name="email" class="form-control" id="email" placeholder="Email">
@@ -34,4 +34,111 @@
             placeholder="Short Description"></textarea>
     </div>
     <input type="submit" value="Add Product">
+</form> --}}
+
+<form action="/addProduct" method="POST">
+    <div class="panel-form position1">
+        <div class="title-form-barang">
+            <h4><strong>Data Barang</strong></h4>
+        </div>
+        <div class="panel-form-barang-body">
+            <div>
+                <!--Form Nama Barang-->
+                <fieldset>
+                    <div class="field">
+                        <div field-row>
+                            <label>Nama Barang</label>
+                        </div>
+                        <input name="name" id="name" minlength="5" type="text" placeholder="Masukan Nama Barang">
+                    </div>
+                </fieldset>
+            </div>
+            <div>
+                <!--Form Harga Barang-->
+                <fieldset>
+                    <div class="field">
+                        <div field-row>
+                            <label>Harga Satuan</label>
+                        </div>
+                        <div tableConstructor>
+                            <div class="boxSatuan">Rp</div>
+                            <input maxlength="13" minlength="0" type="number" name="price" id="price"
+                                placeholder="Masukan Harga">
+                        </div>
+                    </div>
+                </fieldset>
+            </div>
+            <div>
+                <!--Form Stock Barang-->
+                <fieldset>
+                    <div class="field">
+                        <div field-row>
+                            <label>Stok Barang</label>
+                        </div>
+                        <div tableConstructor>
+                            <div class="boxSatuan">Buah</div>
+                            <input maxlength="13" minlength="0" type="number" name="qty" id="qty"
+                                placeholder="Masukan Stok Barang">
+                        </div>
+                    </div>
+                </fieldset>
+            </div>
+            <div>
+                <!--Form Kategori Barang-->
+                <fieldset>
+                    <div class="field">
+                        <div field-row>
+                            <label>Katgori</label>
+                        </div>
+                        <div class="form-group">
+                            <select class="form-control" name="category" id="category">
+                                <option>Minuman</option>
+                                <option>Makanan</option>
+                                <option>Pembersih</option>
+                                <option>MCK</option>
+                            </select>
+                        </div>
+                    </div>
+                </fieldset>
+            </div>
+            <div>
+                <!--Deskripsi-->
+                <fieldset>
+                    <div class="field">
+                        <div field-row>
+                            <label>Gambar Barang</label>
+                        </div>
+                        <div>
+                            <input type="text" name="image" id="image" placeholder="Masukan link gambar">
+                        </div>
+                    </div>
+                </fieldset>
+            </div>
+            <div>
+                <!--Deskripsi-->
+                <fieldset>
+                    <div class="field">
+                        <div field-row>
+                            <label>Deskripsi Barang</label>
+                        </div>
+                        <div>
+                            <textarea class="form-control" placeholder="Masukan deskripsi barang" name="description"
+                                id="description" aria-label="With textarea"></textarea>
+                        </div>
+
+                    </div>
+                </fieldset>
+            </div>
+            <div>
+                <!--Deskripsi-->
+                <fieldset>
+                    <div class="field">
+                        <div field-row>
+                            <input type="submit" class="btn btn-danger" value="Add Product">
+                        </div>
+                    </div>
+                </fieldset>
+            </div>
+        </div>
+    </div>
 </form>

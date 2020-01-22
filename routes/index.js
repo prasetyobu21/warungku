@@ -22,10 +22,10 @@ router.get("/signup", (req, res) => {
 router.post("/signup", userController.signupUser);
 
 router.get("/auth", function(req, res, next) {
-  if (session.status == "agen") {
+  if (session.type == "agen") {
     session.login = true;
     res.redirect("/agen");
-  } else if (session.status == "warung") {
+  } else if (session.type == "warung") {
     session.login = true;
     res.redirect("/warung");
   } else {
@@ -57,18 +57,13 @@ router.get("/admin", function(req, res, next) {
 
 router.post("/loginAdmin", userController.loginAdmin);
 
-router.get("/adminPanel", function(req, res, next) {
-  if (session.login && session.status == "admin") {
-    res.render("admin/dashboard");
-  } else {
-    res.redirect("/admin");
-  }
-});
+// router.get("/adminPanel", adminController.adminDashboard);
 
-router.get("/adminTransactionList", adminController.transaction);
+router.get("/admin/transactionList", adminController.transaction);
 
 router.get("/getCart", adminController.cart);
 router.get("/admin/userList", adminController.userList);
+router.get("/admin/itemList", adminController.itemList);
 router.post("/updateCart", adminController.updateCart);
 router.get("/transaction", adminController.transaction);
 router.get("/adminPanel", adminController.adminDashboard);
