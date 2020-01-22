@@ -35,7 +35,7 @@ exports.product = async (req, res, next) => {
     if (err) {
       res.send(err);
     } else {
-      res.render("client/product", { product: product });
+      res.render("client/product", { product: product, id: session.userID });
     }
   });
 };

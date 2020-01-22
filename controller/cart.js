@@ -26,11 +26,14 @@ exports.cart = (req, res, next) => {
     } else {
       if (cart == null) {
         // res.send("No Cart");
-        res.render("client/warung/noCart");
+        res.render("client/warung/noCart", {
+          id: session.userID
+        });
       } else {
         await Shipping.find({}, (err, shipping) => {
           if (err) console.log(err);
           res.render("client/warung/cart", {
+            id: session.userID,
             cart: cart,
             shipping: shipping
           });
