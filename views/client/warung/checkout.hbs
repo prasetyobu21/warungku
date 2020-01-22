@@ -1,70 +1,74 @@
-{{cart.totalPrice}}
-<form action="/checkout" method="post" id="checkout-form">
-    <div class="row justify-content-md-center">
-        <div class="col-md-12">
-            <div class="form-group">
-                <label for="name">Name</label>
-                <input type="text" name="name" id="name" class="form-control" required>
-            </div>
-        </div>
-    </div>
-    <div class="row justify-content-md-center">
-        <div class="col-md-12">
-            <div class="form-group">
-                <label for="address">Address</label>
-                <input type="text" name="address" id="address" class="form-control" required>
-            </div>
-        </div>
-    </div>
-    <div class="row justify-content-md-center">
-        <div class="col-md-12">
-            <div class="form-group">
-                <label for="card-name">Card Holder Name</label>
-                <input type="text" name="card-name" id="card-name" class="form-control" required>
-            </div>
-        </div>
-    </div>
-    <div class="row justify-content-md-center">
-        <div class="col-md-12">
-            <div class="form-group">
-                <label for="card-number">Credit Card Number</label>
-                <input type="text" name="card-number" id="card-number" class="form-control" required>
-            </div>
-        </div>
-    </div>
-    <div class="row justify-content-md-center">
-        <div class="col-md-12">
-            <div class="row justify-content-md-center">
-                <div class="col-md-6">
-                    <div class="form-group">
-                        <label for="card-expiry-month">Expiration Month</label>
-                        <input type="text" name="card-expiry-month" id="card-expiry-month" class="form-control"
-                            required>
-                    </div>
-                </div>
-                <div class="col-md-6">
-                    <div class="form-group">
-                        <label for="card-expiry-year">Expiration Year</label>
-                        <input type="text" name="card-expiry-year" id="card-expiry-year" class="form-control" required>
-                    </div>
+{{>navbarWarung}}
+<div class="container w-50 mt-3 mb-3">
+    <h3 class="text-center">Total Rp {{cart.totalPrice}}</h3>
+    <h4 class="text-center">Pay Via Credit Card</h4>
+    <form action="/checkout" method="post" id="checkout-form">
+        <div class="row justify-content-md-center">
+            <div class="col-md-12">
+                <div class="form-group">
+                    <label for="name">Name</label>
+                    <input type="text" name="name" id="name" class="form-control" required>
                 </div>
             </div>
         </div>
-    </div>
-    <div class="row justify-content-md-center">
-        <div class="col-md-12">
-            <div class="form-group">
-                <label for="card-cvc">CVC</label>
-                <input type="text" name="card-cvc" id="card-cvc" class="form-control" required>
+        <div class="row justify-content-md-center">
+            <div class="col-md-12">
+                <div class="form-group">
+                    <label for="address">Address</label>
+                    <input type="text" name="address" id="address" class="form-control" required>
+                </div>
             </div>
         </div>
-    </div>
-    <div class="row justify-content-md-center">
-        <div class="col-md-12">
-            <button class="btn btn-primary btn-block" type="submit">Buy Now</button>
+        <div class="row justify-content-md-center">
+            <div class="col-md-12">
+                <div class="form-group">
+                    <label for="card-name">Card Holder Name</label>
+                    <input type="text" name="card-name" id="card-name" class="form-control" required>
+                </div>
+            </div>
         </div>
-    </div>
-</form>
+        <div class="row justify-content-md-center">
+            <div class="col-md-12">
+                <div class="form-group">
+                    <label for="card-number">Credit Card Number</label>
+                    <input type="text" name="card-number" id="card-number" class="form-control" required>
+                </div>
+            </div>
+        </div>
+        <div class="row justify-content-md-center">
+            <div class="col-md-12">
+                <div class="row justify-content-md-center">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="card-expiry-month">Expiration Month</label>
+                            <input type="text" name="card-expiry-month" id="card-expiry-month" class="form-control"
+                                required>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="card-expiry-year">Expiration Year</label>
+                            <input type="text" name="card-expiry-year" id="card-expiry-year" class="form-control"
+                                required>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row justify-content-md-center">
+            <div class="col-md-12">
+                <div class="form-group">
+                    <label for="card-cvc">CVC</label>
+                    <input type="text" name="card-cvc" id="card-cvc" class="form-control" required>
+                </div>
+            </div>
+        </div>
+        <div class="row justify-content-md-center">
+            <div class="col-md-12">
+                <button class="btn btn-primary btn-block" type="submit">Buy Now</button>
+            </div>
+        </div>
+    </form>
 </div>
 
 <script type="text/javascript" src="https://js.stripe.com/v2/"></script>

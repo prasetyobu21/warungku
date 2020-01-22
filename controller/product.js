@@ -7,11 +7,22 @@ exports.showProducts = async (req, res, next) => {
     if (err) {
       console.log(err);
     } else {
-      res.render("index", {
-        title: "home",
-        products: products,
-        message: session.message
-      });
+      if (session.login && session.type == "warung") {
+        res.render("index", {
+          id: session.userID,
+          title: "home",
+          products: products,
+          message: session.message
+        });
+      } else {
+        res.render("indexAgen", {
+          id: session.userID,
+          title: "home",
+          products: products,
+          message: session.message
+        });
+      }
+
       session.message = null;
       // res.send(products);
     }

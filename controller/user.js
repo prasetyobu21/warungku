@@ -1,6 +1,9 @@
 const db = require("../dbSql");
 const session = require("express-session");
+const Product = require("../models/product");
+const Cart = require("../models/cart");
 const User = require("../models/user");
+const Shipping = require("../models/shipping");
 
 var con = db.conn;
 
@@ -15,9 +18,9 @@ exports.loginUser = (req, res, next) => {
         session.type = result[0].userStatus;
         User.findOne({ email: session.userID }, (err, docs) => {
           // console.log(docs._id);
-          session.id = docs._id;
+          session.id = docs.id;
+          res.redirect("/auth");
         });
-        res.redirect("/auth");
       } else if (err) {
         res.redirect("/signin", { message: "Check your account again!" });
       }
@@ -72,4 +75,45 @@ exports.signupUser = (req, res, next) => {
       }
     }
   );
+};
+
+exports.agen = async (req, res, next) => {
+  if (session.login && session.type == "agen") {
+    await Product.find({ "seller.email": session.userID }, (err, product) => {
+      if (err) console.log(err);
+      // console.log(product);
+      res.render("client/agen/dashboard", {
+        id: session.userID,
+        productLength: product.length
+      });
+    });
+  } else {
+    // res.redirect("/");
+    res.send(session.type);
+  }
+};
+
+exports.warung = async (req, res, next) => {
+  if (session.login && session.type == "warung") {
+    res.render("client/warung/dashboard", {
+      id: session.userID
+    });
+  } else {
+    res.redirect("/");
+  }
+};
+
+exports.products = async (req, res, next) => {
+  if (session.login && session.type == "agen") {
+    await Product.find({ "seller.email": session.userID }, (err, products) => {
+      if (err) console.log(err);
+      // console.log(product);
+      res.render("client/agen/products", {
+        id: session.userID,
+        products: products
+      });
+    });
+  } else {
+    res.redirect("/");
+  }
 };

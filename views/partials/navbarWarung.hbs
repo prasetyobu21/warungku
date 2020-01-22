@@ -1,5 +1,5 @@
 <div class="row w-100 m-0">
-    <nav class="navbar navbar-expand-lg navbar-warning bg-warning w-100">
+    <nav class="navbar navbar-expand-lg sticky-top navbar-warning bg-warning w-100">
         <a class="navbar-brand" href="#">
             <img src="/public/img/icon_warungku.png" alt="">
         </a>
@@ -21,12 +21,16 @@
                 </li>
             </ul>
         </div>
-        {{#if session.login}}
-        <a class="ml-2 mr-2 text-dark" style="text-decoration: none;" href="/profile/{{session.id}}">Signup</a>
-        {{else}}
+        {{#if id}}
         <a class="ml-2 mr-2 text-dark" style="text-decoration: none;" href="/cart"><i class="material-icons">
                 shopping_cart
             </i></a>
+        <i class="material-icons">
+            account_circle
+        </i>
+        <a class="ml-2 mr-2 text-dark" style="text-decoration: none;" href="/warung">Hi, {{id}}</a>
+        <a class="text-light btn btn-danger" href="/logout">Logout</a>
+        {{else}}
         <a class="text-light btn btn-success" href="/signin">Login</a>
         <a class="ml-2 mr-2 text-dark" style="text-decoration: none;" href="/signup">Signup</a>
         {{/if}}

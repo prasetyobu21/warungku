@@ -36,7 +36,12 @@
     <input type="submit" value="Add Product">
 </form> --}}
 
+{{#if agen}}
+{{>navbarAgen}}
+{{else}}
 {{>navbarWarung}}
+{{/if}}
+
 <form action="/addProduct" method="POST">
     <div class="panel-form position1">
         <div class="title-form-barang">

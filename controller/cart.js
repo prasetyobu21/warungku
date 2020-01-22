@@ -30,7 +30,10 @@ exports.cart = (req, res, next) => {
       } else {
         await Shipping.find({}, (err, shipping) => {
           if (err) console.log(err);
-          res.render("client/warung/cart", { cart: cart, shipping: shipping });
+          res.render("client/warung/cart", {
+            cart: cart,
+            shipping: shipping
+          });
           // res.send(cart);
         });
       }
@@ -224,7 +227,7 @@ exports.checkout = async (req, res, next) => {
                 console.log(err);
               } else {
                 // res.send("Success");
-                session.message = "Success";
+                session.message = "Pembayaran Berhasil";
                 session.cart = null;
                 res.redirect("/");
               }

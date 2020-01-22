@@ -28,29 +28,15 @@ router.get("/auth", function(req, res, next) {
     res.redirect("/agen");
   } else if (session.type == "warung") {
     session.login = true;
-    console.log(session.id);
     res.redirect("/warung");
   } else {
     res.redirect("/", { message: "User not found!" });
   }
 });
 
-router.get("/warung", function(req, res, next) {
-  if (session.login && session.status == "warung") {
-    console.log(session.id);
-    res.render("client/warung/dashboard");
-  } else {
-    res.redirect("/");
-  }
-});
+router.get("/warung", userController.warung);
 
-router.get("/agen", function(req, res, next) {
-  if (session.login && session.status == "agen") {
-    res.render("client/agen/dashboard");
-  } else {
-    res.redirect("/");
-  }
-});
+router.get("/agen", userController.agen);
 
 // Admin Routing
 
@@ -61,8 +47,14 @@ router.get("/admin", function(req, res, next) {
 router.post("/loginAdmin", userController.loginAdmin);
 
 // router.get("/adminPanel", adminController.adminDashboard);
-
+router.get("/logout", (req, res) => {
+  session.userID = null;
+  session.agen = null;
+  session.warung = null;
+  res.redirect("/");
+});
 router.get("/admin/transactionList", adminController.transaction);
+router.get("/dashboard/products", userController.products);
 
 router.get("/getCart", adminController.cart);
 router.get("/admin/userList", adminController.userList);
@@ -79,7 +71,11 @@ router.post("/addShipping", shippingController.add);
 router.get("/", productController.showProducts);
 router.get("/product/:id", productController.product);
 router.get("/addProduct", (req, res) => {
-  res.render("client/agen/addProduct", { title: "Add Product" });
+  res.render("client/agen/addProduct", {
+    title: "Add Product",
+    id: session.userID,
+    agen: session.agen
+  });
 });
 router.post("/addProduct", productController.addProduct);
 router.post("/deleteProduct", productController.deleteProduct);

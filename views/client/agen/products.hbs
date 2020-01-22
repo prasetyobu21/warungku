@@ -18,11 +18,11 @@
 
 <div class="container-fluid">
     <div class="row">
-        <nav class="col-md-2 d-none d-md-block bg-light sidebar p-0 h-100 ">
+        <nav class="col-md-2 d-none d-md-block bg-light sidebar p-0 h-100">
             <div class="sidebar sticky bg-warning h-100">
                 <ul class="nav flex-column">
                     <li class="nav-item">
-                        <a class="nav-link active" href="#">
+                        <a class="nav-link " href="/agen">
                             <span data-feather="home"></span>
                             Dashboard <span class="sr-only">(current)</span>
                         </a>
@@ -34,7 +34,7 @@
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="/dashboard/products">
+                        <a class="nav-link active" href="#">
                             <span data-feather="shopping-cart"></span>
                             Products
                         </a>
@@ -46,41 +46,33 @@
         <main role="main" class="col-md-9 ml-sm-auto col-lg-10 px-4">
             <div
                 class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
-                <h1 class="h2">Dashboard</h1>
+                <h1 class="h2">Products</h1>
             </div>
-            <div class="row justify-content-start">
-                <div class="col-3 col-sm-6">
+            <div class="row justify-content-start mb-3">
+                {{# each products}}
 
-                    <div class="card text-white bg-primary mb-3" style="max-width: 18rem;">
+                <div class="col-sm-2" style="margin-right: 20px; margin-top: 10px;">
+                    <div class="card" style="width: 200px;">
+                        <img class="card-img-top mx-auto" src="{{image}}" alt="Card image cap"
+                            style="width: 100px;height: 150px;">
                         <div class="card-body">
-                            <h2 class="card-text">Total My Products: {{productLength}}</h2>
+                            <p class="card-title m-0"><a href="/product/{{id}}"
+                                    style="text-decoration: none; color:black; font-size: small;"><b>{{name}}</b></a>
+                            </p>
+                            <p class="card-text m-0" style="font-size: small;">Rp {{price}}</p>
+                            <p class="card-text m-0" style="font-size: small;">QTY: {{qty}}</p>
+                            <p class=" card-text m-0 mb-2" style="font-size: small; color:gray"><i>{{seller.email}}</i>
+                            </p>
+                            <a href="/editProduct/{{id}}" class="btn btn-warning float-left">
+                                <p class="card-text m-0" style="font-size: small;">Edit</p>
+                            </a><a href="/removeProduct/{{id}}" class="btn btn-danger float-right">
+                                <p class="card-text m-0" style="font-size: small;">Remove</p>
+                            </a>
                         </div>
                     </div>
                 </div>
-                <div class="col-3 col-sm-6">
 
-                    <div class="card text-white bg-success mb-3" style="max-width: 18rem;">
-                        <div class="card-body">
-                            <h2 class="card-text">Pending Order: 5</h2>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-3 col-sm-6">
-
-                    <div class="card text-white bg-danger mb-3" style="max-width: 18rem;">
-                        <div class="card-body">
-                            <h2 class="card-text">Finished Order: 120</h2>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-3 col-sm-6">
-
-                    <div class="card text-white bg-info mb-3" style="max-width: 18rem;">
-                        <div class="card-body">
-                            <h2 class="card-text">Total Transaction: Rp 20,000,000</h2>
-                        </div>
-                    </div>
-                </div>
+                {{/each}}
             </div>
 
     </div>
