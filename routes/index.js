@@ -28,6 +28,7 @@ router.get("/auth", function(req, res, next) {
     res.redirect("/agen");
   } else if (session.type == "warung") {
     session.login = true;
+    console.log(session.id);
     res.redirect("/warung");
   } else {
     res.redirect("/", { message: "User not found!" });

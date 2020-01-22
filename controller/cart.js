@@ -16,7 +16,8 @@ exports.carts = async (req, res, next) => {
 };
 
 exports.cart = (req, res, next) => {
-  let cartId = "5e28299523b1700b9869ddbd";
+  let cartId = session.cart;
+  // console.log(cartId);
   Cart.findOne({ _id: cartId, status: "In Cart" }, async (err, cart) => {
     // Sedang diteruskan ke agent
     if (err) {
@@ -39,8 +40,8 @@ exports.cart = (req, res, next) => {
 
 exports.addToCart = async (req, res, next) => {
   let productId = req.params.id;
-  let userId = "5e0762e77aa0601a8c7d575e";
-  let cartId = "5e28299523b1700b9869ddbd";
+  let userId = session.id;
+  let cartId = session.cart;
   await User.findById(userId, async (err, user) => {
     if (err) {
       console.log(err);
@@ -48,7 +49,8 @@ exports.addToCart = async (req, res, next) => {
       await Product.findById(productId, async (err, product) => {
         if (err) console.log(err);
         await Cart.findById(cartId, async (err, cart) => {
-          if (err) {
+          if (err) console.log(err);
+          if (cart == null) {
             let newCart = new Cart({
               user: user,
               order: {
@@ -58,14 +60,13 @@ exports.addToCart = async (req, res, next) => {
               },
               totalPrice: product.price
             });
-            // res.send(newCart);
-            await newCart.save((err, newCart) => {
+            await newCart.save((err, cart) => {
               if (err) console.log(err);
               // res.send(newCart);
-              res.render("client/warung/cart", { cart: newCart });
+              session.cart = cart.id;
+              res.redirect("/");
             });
           } else {
-            // res.send(cart.order[0].product.name);
             let item = cart.order.id(productId);
             if (item == undefined) {
               // res.send("Undefined");
@@ -81,8 +82,6 @@ exports.addToCart = async (req, res, next) => {
                   console.log(err);
                 } else {
                   res.redirect("/");
-                  // res.render("client/warung/cart", { cart: cart });
-                  // res.send(cart);
                 }
               });
             } else {
@@ -95,8 +94,6 @@ exports.addToCart = async (req, res, next) => {
                   console.log(err);
                 } else {
                   res.redirect("/cart");
-                  // res.render("client/warung/cart", { cart: cart });
-                  // res.send(cart.user.email);
                 }
               });
             }
@@ -108,48 +105,40 @@ exports.addToCart = async (req, res, next) => {
 };
 
 exports.decreaseOne = async (req, res, next) => {
-  let cartId = "5e28299523b1700b9869ddbd";
+  let cartId = session.cart;
   let productId = req.params.id;
   await Product.findById(productId, async (err, product) => {
-    if (err) {
-      console.log(err);
-    } else {
-      if (product.qty > 1) {
-        await Cart.findById(cartId, async (err, cart) => {
-          if (err) {
-            console.log(err);
-          } else {
-            let item = cart.order.id(productId);
-            item.qty -= 1;
-            item.totalPrice -= product.price;
-            cart.totalPrice -= product.price;
-            cart.qty -= 1;
-            if (cart.qty < 1) {
-              cart.order.pull({ _id: productId });
-            }
-            await cart.save((err, cart) => {
-              if (err) {
-                res.send(err);
-              } else {
-                res.redirect("/cart");
-                // res.render("client/warung/cart", { cart: cart });
-                // res.json(cart);
-              }
-            });
-          }
-        });
+    if (err) console.log(err);
+    await Cart.findById(cartId, async (err, cart) => {
+      if (err) console.log(err);
+      let item = cart.order.id(productId);
+      item.qty -= 1;
+      item.totalPrice -= product.price;
+      cart.totalPrice -= product.price;
+      cart.qty -= 1;
+      if (cart.qty < 1) {
+        res.render("client/warung/noCart");
       } else {
-        res.render("client/home", {
-          products: products,
-          message: "Product Kosong"
-        });
+        if (item.qty < 1) {
+          cart.order.pull({ _id: productId });
+        } else {
+          await cart.save(err => {
+            if (err) {
+              res.send(err);
+            } else {
+              res.redirect("/cart");
+              // res.render("client/warung/cart", { cart: cart });
+              // res.json(cart);
+            }
+          });
+        }
       }
-    }
+    });
   });
 };
 
 exports.removeFromCart = async (req, res, next) => {
-  let cartId = "5e28299523b1700b9869ddbd";
+  let cartId = session.cart;
   let productId = req.params.id;
   await Cart.findById(cartId, async (err, cart) => {
     if (err) {
@@ -186,7 +175,7 @@ exports.removeFromCart = async (req, res, next) => {
 };
 
 exports.removeCart = async (req, res, next) => {
-  let cartId = "5e1c207eb9873b4824472471";
+  let cartId = session.cart;
   await Cart.deleteOne({ _id: cartId }, (err, cart) => {
     if (err) {
       console.log(err);
@@ -199,7 +188,7 @@ exports.removeCart = async (req, res, next) => {
 };
 
 exports.checkPage = async (req, res, next) => {
-  let cartId = "5e28299523b1700b9869ddbd";
+  let cartId = session.cart;
   await Cart.findById(cartId, (err, cart) => {
     if (err) console.log(err);
     res.render("client/warung/checkout", { cart: cart });
@@ -207,7 +196,7 @@ exports.checkPage = async (req, res, next) => {
 };
 
 exports.checkout = async (req, res, next) => {
-  let cartId = "5e28299523b1700b9869ddbd";
+  let cartId = session.cart;
   const stripe = require("stripe")(
     "sk_test_uDIFUkLi6pqMa1M4iG78eAKq004N78CImt"
   );
@@ -236,6 +225,7 @@ exports.checkout = async (req, res, next) => {
               } else {
                 // res.send("Success");
                 session.message = "Success";
+                session.cart = null;
                 res.redirect("/");
               }
             });
@@ -247,7 +237,7 @@ exports.checkout = async (req, res, next) => {
 };
 
 exports.installment = async (req, res, next) => {
-  let cartId = "5e1c207eb9873b4824472471";
+  let cartId = session.cart;
   await Cart.findById(cartId, async (err, cart) => {
     if (err) {
       console.log(err);

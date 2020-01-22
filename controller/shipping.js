@@ -22,7 +22,7 @@ exports.add = async (req, res, next) => {
 };
 
 exports.choose = async (req, res, next) => {
-  let cartId = "5e28299523b1700b9869ddbd";
+  let cartId = session.cart;
   let shippingId = req.params.id;
   await Cart.findById(cartId, async (err, cart) => {
     if (err) console.log(err);
@@ -40,7 +40,7 @@ exports.choose = async (req, res, next) => {
 };
 
 exports.change = async (req, res, next) => {
-  let cartId = "5e28299523b1700b9869ddbd";
+  let cartId = session.cart;
   let shippingId = req.params.id;
   await Cart.findById(cartId, async (err, cart) => {
     if (err) console.log(err);

@@ -12,7 +12,7 @@ exports.loginUser = (req, res, next) => {
     function(err, result) {
       if (result.length > 0) {
         session.userID = result[0].userEmail;
-        session.type = result[0].userType;
+        session.type = result[0].userStatus;
         User.findOne({ email: session.userID }, (err, docs) => {
           // console.log(docs._id);
           session.id = docs._id;

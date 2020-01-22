@@ -24,6 +24,9 @@
         {{#if session.login}}
         <a class="ml-2 mr-2 text-dark" style="text-decoration: none;" href="/profile/{{session.id}}">Signup</a>
         {{else}}
+        <a class="ml-2 mr-2 text-dark" style="text-decoration: none;" href="/cart"><i class="material-icons">
+                shopping_cart
+            </i></a>
         <a class="text-light btn btn-success" href="/signin">Login</a>
         <a class="ml-2 mr-2 text-dark" style="text-decoration: none;" href="/signup">Signup</a>
         {{/if}}

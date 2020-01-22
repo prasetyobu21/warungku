@@ -36,7 +36,7 @@
                         </a>
                         </form>
                         <p class="lead mb-0 mt-0">{{qty}}</p>
-                        <a href="/addToCart/{{id}}" style="text-decoration: none; color:black">
+                        <a href="/decreaseOne/{{id}}" style="text-decoration: none; color:black">
                             <i class="material-icons">remove</i>
                         </a>
                     </td>
@@ -45,7 +45,7 @@
                     <td class="col-sm-1 col-md-1">
                         <button type="button" class="btn btn-danger">
                             <a href="/removeFromCart/{{id}}" style="text-decoration: none; color:black">
-                                <span class="fa fa-remove"></span> Remove
+                                Remove
                             </a>
                         </button></td>
                 </tr>
@@ -74,7 +74,7 @@
                         <button type="button" class="btn btn-danger">
                             <a href="/changeShipping/{{cart.shipping.type._id}}"
                                 style="text-decoration: none; color:black">
-                                <span class="fa fa-remove"></span> Change
+                                Change
                             </a>
                         </button>
                     </td>
@@ -116,19 +116,19 @@
                     <td>
                         <button type="button" class="btn btn-warning">
                             <a href="/" style="text-decoration: none; color:black">
-                                <span class="fa fa-shopping-cart"></span> Continue Shopping
+                                Continue Shopping
                             </a>
                         </button></td>
                     <td>
                         {{#if cart.shipping.type.name}}
                         <button type="button" class="btn btn-warning">
                             <a href="/checkout" style="text-decoration: none; color:black">
-                                <span class="fa fa-play"></span> Checkout
+                                Checkout
                             </a>
                         </button>
                         {{else}}
                         <button type="button" class="btn btn-success" disabled>
-                            Checkout <span class="fa fa-play"></span>
+                            Checkout
                         </button></td>
                     {{/if}}
                 </tr>
