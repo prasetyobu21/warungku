@@ -5,27 +5,51 @@ const session = require("express-session");
 
 var con = db.conn;
 
-// exports.userList = function(req, res, next) {
-//   con.query("select * from users"),
-//     function(err, result) {
-//       if (result.length > 0) {
-//         var email = result[0].email;
-//         var type = result[0].userType;
-//         var address = result[0].userAddress;
-//         var phone = result[0].phoneNumber;
-//         var status = result[0].userStatus;
-//       } else if (err) {
-//         console.log(err);
-//       }
-//     };
-// };
+exports.adminDashboard = async (req, res, next) => {
+  if (session.login && session.userType == "admin") {
+    await Cart.find({}, (err, cart) => {
+      if (err) {
+        console.log(err);
+      } else {
+        session.totalTransaksiHarian = cart.length;
+      }
+    });
 
-exports.adminDashboard = function(req, res, next) {
-  res.render("admin/dashboard");
+    await Product.find({}, (err, product) => {
+      if (err) {
+        console.log(err);
+      } else {
+        session.totalItem = product.length;
+      }
+    });
+
+    con.query(
+      "select count(userEmail) as totalUser from users",
+      (err, result, field) => {
+        if (err) {
+          res.send("Hilang");
+        } else {
+          // res.render("admin/userlist", { totalUser: result[0].totalUser });
+          session.totalUserAktif = result[0].totalUser;
+          console.log(session.totalUserAktif);
+          // console.log(result[0].totalUser);
+        }
+      }
+    );
+
+    res.render("admin/dashboard", {
+      cart: session.totalTransaksiHarian,
+      totalUser: session.totalUserAktif,
+      totalItem: session.totalItem
+    });
+    console.log(session.totalUserAktif);
+  } else {
+    res.redirect("/admin");
+  }
 };
 
 exports.userList = function(req, res, next) {
-  const result = con.query("select * from users", (err, result, field) => {
+  con.query("select * from users", (err, result, field) => {
     if (err) {
       res.send("Hilang");
     } else {
@@ -52,7 +76,7 @@ exports.itemList = async (req, res, next) => {
     if (err) {
       res.send(err);
     } else {
-      res.send(products);
+      res.render("admin/itemList", { products: products });
     }
   });
 };
@@ -79,7 +103,7 @@ exports.totalTransaction = function(req, res, next) {
     };
 };
 
-exports.viewReport = function(req, res, next) {
+exports.viewComplain = function(req, res, next) {
   var reportID = req.body.reportID;
   con.query("select * from complain where complainID = ?", [reportID], function(
     result,

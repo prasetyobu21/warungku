@@ -12,7 +12,7 @@ exports.loginUser = (req, res, next) => {
     function(err, result) {
       if (result.length > 0) {
         session.userID = result[0].userEmail;
-        session.status = result[0].userStatus;
+        session.type = result[0].userType;
         User.findOne({ email: session.userID }, (err, docs) => {
           // console.log(docs._id);
           session.id = docs._id;
@@ -53,7 +53,7 @@ exports.signupUser = (req, res, next) => {
   const userData = [email, password, userStatus];
   console.log(userData);
   con.query(
-    "INSERT INTO users ( userEmail, userPassword, userStatus) VALUES (?,?,?)",
+    "INSERT INTO users ( userEmail, userPassword, userType, userStatus) VALUES (?,?,?, 'aktif')",
     userData,
     (err, result) => {
       if (err) {

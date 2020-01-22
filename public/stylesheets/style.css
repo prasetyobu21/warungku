@@ -1,8 +1,256 @@
 body {
-  padding: 50px;
+  /* padding: 50px; */
   font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
 }
 
 a {
   color: #00b7ff;
+}
+
+.sidebar {
+  position: fixed;
+  left: -240px;
+  width: 240px;
+  height: 100%;
+  background: #ff3333;
+  transition: all 0.5s ease;
+}
+.sidebar header {
+  color: white;
+  background: #b80000;
+  font-size: 28px;
+  line-height: 70px;
+  text-align: center;
+  user-select: none;
+}
+.sidebar a {
+  display: block;
+  color: white;
+  height: 65px;
+  width: 100%;
+  line-height: 65px;
+  padding-left: 30px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  border-top: 1px solid black;
+  border-left: 5px solid rgb(28, 126, 238) transparent;
+  transition: all 0.5s ease;
+  box-sizing: border-box;
+}
+
+a:hover,
+a.active {
+  border-left: 5px solid rgb(28, 126, 238);
+  color: rgb(28, 126, 238);
+}
+.sidebar a i {
+  font-size: 23px;
+  margin-right: 16px;
+}
+.sidebar a span {
+  letter-spacing: 1px;
+  text-transform: uppercase;
+}
+
+#check {
+  display: none;
+}
+
+label #btn,
+label #close {
+  position: absolute;
+  cursor: pointer;
+  background: rgb(207, 5, 5);
+  height: 45px;
+  width: 45px;
+  text-align: center;
+  line-height: 45px;
+  color: white;
+  font-size: 29px;
+  border-radius: 5px;
+  margin: 15px 30px;
+  border: 1px solid rgb(207, 5, 5);
+  transition: all 0.5s ease;
+}
+label #close {
+  opacity: 0;
+  visibility: hidden;
+}
+#check:checked ~ label #btn {
+  margin-left: 245px;
+  opacity: 0;
+  visibility: hidden;
+}
+#check:checked ~ label #close {
+  margin-left: 245px;
+  opacity: 1;
+  visibility: visible;
+}
+#check:checked ~ .sidebar {
+  left: 0;
+}
+
+@media (max-width: 600px) {
+  .sidebar {
+    height: auto;
+    width: 70px;
+    left: 0;
+    margin: 100px 0;
+    transition: all 0.5s ease;
+  }
+  header,
+  #btn,
+  #close {
+    display: none;
+  }
+  span {
+    position: absolute;
+    margin-left: 0;
+    visibility: hidden;
+  }
+  .sidebar header {
+    display: none;
+  }
+  .sidebar a i {
+    margin-left: -10px;
+  }
+  a:hover {
+    width: 200px;
+    background: inherit;
+  }
+  .sidebar a:hover span {
+    opacity: 1px;
+    visibility: visible;
+  }
+}
+
+.panel-form {
+  display: block;
+  margin-bottom: 12px;
+  border-radius: 2px;
+  background-color: #fff;
+  box-shadow: 2px 1px rgba(51, 51, 51, 0.05);
+  border: 1px solid #eee;
+}
+.position1 {
+  margin-top: 0% !important;
+  margin-right: 5% !important;
+  margin-left: 90px !important;
+}
+.position2 {
+  margin-top: 0% !important;
+  margin-right: 5% !important;
+  margin-left: 90px !important;
+  height: 100%;
+}
+.title-form-barang {
+  padding: 18px 24px;
+  background-color: #fafafa;
+  border-bottom: 1px solid #eee;
+}
+.panel-form-barang-body {
+  padding: 24px;
+  margin-left: 30px;
+}
+.fieldset {
+  border: 0;
+  min-width: 0;
+}
+.field {
+  max-width: 1100;
+  width: 85%;
+  margin-bottom: 18px;
+  margin-left: 20px;
+  border-collapse: separate;
+}
+.field-row {
+  display: table;
+  width: 100%;
+  border-collapse: separate;
+}
+label {
+  font-size: 14px;
+  line-height: 1.5;
+  display: inline-block;
+}
+input {
+  padding: 0px 12px;
+  height: 36px;
+  margin: 0px;
+  font-size: 14px;
+  line-height: 1.5;
+  border: 1px solid #ddd;
+  background-color: #fff;
+  clear: both;
+  overflow: visible;
+  width: 100%;
+  letter-spacing: -0.5px;
+  color: #333;
+  border-radius: 2px;
+  outline: none;
+}
+
+.tableConstructor {
+  display: table;
+  width: 100%;
+  border-collapse: separate;
+}
+.boxSatuan {
+  padding: 0px 12px;
+  background-color: #f5f5f5;
+  display: table;
+  width: 1%;
+  border-right: 0;
+  border-radius: 2px 0 0 2px;
+  text-align: center;
+  white-space: nowrap;
+  color: #999;
+  border: solid 1px #ddd;
+}
+
+.title-keranjang {
+  padding: 18px 24px;
+  background-color: #fafafa;
+  border-bottom: 1px solid #eee;
+}
+.panel-keranjang-kosong {
+  padding: 24px;
+  margin-left: 30px;
+  text-align: center;
+}
+.panel-ringkasan {
+  padding: 24px;
+  margin-left: 30px;
+}
+.panel-keranjang {
+  padding: 24px;
+  margin-left: 30px;
+}
+.product-image {
+  max-width: 100%;
+  height: auto;
+}
+.img-produk {
+  width: 120px;
+  height: 120px;
+  height: auto;
+  float: left;
+  margin: 3px;
+  padding: 3px;
+}
+.Product {
+  width: auto;
+  height: 120px;
+  float: left;
+  margin: 3px;
+  padding: 3px;
+  align-self: center;
+}
+.trash-can {
+  width: 20px;
+  height: 20px;
+  float: right;
+}
+
+.nama-produk {
+  width: 50%;
 }

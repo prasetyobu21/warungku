@@ -1,10 +1,39 @@
 {{>navbarAdmin}}
 
-<div class="card text-white bg-info mb-3" style="max-width: 18rem;">
-    <div class="card-header">Header</div>
-    <div class="card-body">
-        <h5 class="card-title">Info card title</h5>
-        <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's
-            content.</p>
+<div class="container" style="margin-top: 100px;">
+    <div class="row">
+        <div class="col-sm">
+            <div class="card text-white bg-info mb-3" style="max-width: 18rem;">
+                <div class="card-header">Transaksi hari ini</div>
+                <div class="card-body">
+                    <h5 class="card-title">{{cart}}</h5>
+                    <a href="/admin/transactionList" class="card-text" style="text-decoration: none; color:white">Lihat
+                        semua
+                        transaksi</a>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm">
+            <div class="card text-white bg-success mb-3" style="max-width: 18rem;">
+                <div class="card-header">Total user aktif</div>
+                <div class="card-body">
+                    <h5 class="card-title">{{totalUser}}</h5>
+                    <a href="/admin/userList" class="card-text" style="text-decoration: none; color:white">Lihat
+                        semua
+                        user</a>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm">
+            <div class="card text-white bg-warning mb-3" style="max-width: 18rem;">
+                <div class="card-header">Total item</div>
+                <div class="card-body">
+                    <h5 class="card-title">{{totalItem}}</h5>
+                    <a href="/admin/itemList" class="card-text" style="text-decoration: none; color:white">Lihat
+                        semua
+                        item</a>
+                </div>
+            </div>
+        </div>
     </div>
 </div>
