@@ -27,22 +27,25 @@ exports.showProduct = async (req, res, next) => {
 exports.addProduct = async (req, res, next) => {
   if (session.login && session.id) {
     const { name, image, price, qty, category } = req.body;
-    const product = new Product({
-      name: name,
-      image: image,
-      price: price,
-      qty: qty,
-      category: category,
-      seller: session.id
+    await User.findById(session.id, async (err, user) => {
+      if (err) console.log(err);
+      const product = new Product({
+        name: name,
+        image: image,
+        price: price,
+        qty: qty,
+        category: category,
+        seller: user
+      });
+      await product.save((err, docs) => {
+        if (err) {
+          console.log(err);
+        } else {
+          console.log(docs);
+        }
+      });
+      res.redirect("/agen");
     });
-    await product.save((err, docs) => {
-      if (err) {
-        console.log(err);
-      } else {
-        console.log(docs);
-      }
-    });
-    res.redirect("/agen");
   } else {
     res.redirect("/signin");
   }

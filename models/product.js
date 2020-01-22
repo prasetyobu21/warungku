@@ -23,8 +23,7 @@ const productSchema = new Schema({
     type: String
   },
   seller: {
-    type: Schema.ObjectId,
-    ref: "User"
+    type: Object
   },
   date: {
     type: Date,

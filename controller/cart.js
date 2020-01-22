@@ -1,5 +1,6 @@
 const Product = require("../models/product");
 const Cart = require("../models/cart");
+const User = require("../models/user");
 const session = require("express-session");
 
 exports.carts = async (req, res, next) => {
@@ -14,70 +15,153 @@ exports.carts = async (req, res, next) => {
 };
 
 exports.cart = async (req, res, next) => {
-  let cartId = "5e1c207eb9873b4824472471";
-  await Cart.findById(cartId, (err, cart) => {
+  let cartId = "5e27d458f4c68e1918807143";
+  await Cart.findById(cartId, async (err, cart) => {
     if (err) {
       // res.render("client/warung/cart", { message: "Empty Cart" });
-      res.send(err);
+      console.log(cart);
     } else {
-      // res.render("client/warung/cart", { cart: cart });
-      res.render("client/warung/checkout", { cart: cart });
+      res.render("client/warung/cart", { cart: cart });
+      // console.log(cart);
     }
   });
 };
 
 exports.addToCart = async (req, res, next) => {
-  let productId = "5e077056856fca2084ccd7e1";
+  let productId = "5e271072c17d6e13fca90d94";
   let userId = "5e0762e77aa0601a8c7d575e";
-  let cartId = "5e1c207eb9873b4824472471";
-  await Product.findById(productId, async (err, product) => {
+  let cartId = "5e27d458f4c68e1918807143";
+  await User.findById(userId, async (err, user) => {
     if (err) {
       console.log(err);
     } else {
-      if (product.qty > 0) {
+      await Product.findById(productId, async (err, product) => {
+        if (err) console.log(err);
         await Cart.findById(cartId, async (err, cart) => {
           if (err) {
-            let cart = new Cart({
-              user: userId,
+            let newCart = new Cart({
+              user: user,
               order: {
                 _id: productId,
-                product: productId
+                product: product
               },
               totalPrice: product.price
             });
-            await cart.save(async (err, cart) => {
-              if (err) {
-                console.log(err);
-              } else {
-                res.render("client/warung/cart", { cart: cart });
-              }
+            // res.send(newCart);
+            await newCart.save((err, newCart) => {
+              if (err) console.log(err);
+              // res.send(newCart);
+              res.render("client/warung/cart", { cart: newCart });
             });
           } else {
+            // res.send(cart.order[0].product.name);
             let item = cart.order.id(productId);
-            item.qty += 1;
-            cart.totalPrice += product.price;
-            cart.qty += 1;
-            await cart.save((err, cart) => {
-              if (err) {
-                console.log(err);
-              } else {
-                res.render("client/warung/cart", { cart: cart });
-              }
-            });
+            if (item == undefined) {
+              // res.send("Undefined");
+              cart.order.push({
+                _id: productId,
+                product: product
+              });
+              cart.qty += 1;
+              cart.totalPrice += product.price;
+              cart.save((err, cart) => {
+                if (err) {
+                  console.log(err);
+                } else {
+                  res.render("client/warung/cart", { cart: cart });
+                  // res.send(cart);
+                }
+              });
+            } else {
+              item.qty += 1;
+              cart.totalPrice += product.price;
+              cart.qty += 1;
+              await cart.save((err, cart) => {
+                if (err) {
+                  console.log(err);
+                } else {
+                  res.render("client/warung/cart", { cart: cart });
+                  // res.send(cart.user.email);
+                }
+              });
+            }
           }
         });
-      } else {
-        res.render("client/home", {
-          product: product,
-          message: "Product Kosong"
-        });
-      }
+      });
     }
   });
 };
 
+// exports.addToCart = async (req, res, next) => {
+//   let productId = "5e076dc334df8134189c0332";
+//   let userId = "5e0762e77aa0601a8c7d575e";
+//   let cartId = "5e1c207eb9873b4824472471";
+//   await Product.findById(productId, async (err, product) => {
+//     if (err) {
+//       console.log(err);
+//     } else {
+//       if (product.qty > 0) {
+//         await Cart.findById(cartId, async (err, cart) => {
+//           if (err) {
+//             let cart = new Cart({
+//               user: userId,
+//               order: {
+//                 _id: productId,
+//                 product: productId
+//               },
+//               totalPrice: product.price
+//             });
+//             await cart.save(async (err, cart) => {
+//               if (err) {
+//                 console.log(err);
+//               } else {
+//                 res.render("client/warung/cart", { cart: cart });
+//               }
+//             });
+//           } else {
+//             let item = cart.order.id(productId);
+//             if (item == undefined) {
+//               cart.order.push({
+//                 _id: productId,
+//                 product: productId
+//               });
+//               cart.qty += 1;
+//               cart.totalPrice += product.price;
+//               cart.save((err, cart) => {
+//                 if (err) {
+//                   console.log(err);
+//                 } else {
+//                   // res.render("client/warung/cart", { cart: cart });
+//                   res.send(cart);
+//                 }
+//               });
+//             } else {
+//               item.qty += 1;
+//               cart.totalPrice += product.price;
+//               cart.qty += 1;
+//               await cart.save((err, cart) => {
+//                 if (err) {
+//                   console.log(err);
+//                 } else {
+//                   // res.render("client/warung/cart", { cart: cart });
+//                   res.send(cart);
+//                 }
+//               });
+//             }
+//           }
+//         });
+//       } else {
+//         res.render("client/home", {
+//           product: product,
+//           message: "Product Kosong"
+//         });
+//       }
+//     }
+//   });
+// };
+
 exports.decreaseOne = async (req, res, next) => {
-  let cartId = "5e1c207eb9873b4824472471";
+  let cartId = "5e27d458f4c68e1918807143";
   let productId = "5e077056856fca2084ccd7e1";
   await Product.findById(productId, async (err, product) => {
     if (err) {
@@ -115,7 +199,7 @@ exports.decreaseOne = async (req, res, next) => {
 };
 
 exports.removeFromCart = async (req, res, next) => {
-  let cartId = "5e1c207eb9873b4824472471";
+  let cartId = "5e27d458f4c68e1918807143";
   let productId = "5e077056856fca2084ccd7e1";
   await Cart.findById(cartId, async (err, cart) => {
     if (err) {

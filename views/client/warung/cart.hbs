@@ -1,0 +1,8 @@
+Total price : {{cart.totalPrice}}
+total qty : {{cart.qty}}
+{{#each cart.order}}
+product : {{product.name}}
+price : {{product.price}}
+qty : {{qty}}
+{{/each}}
+User : {{cart.user.email}}
