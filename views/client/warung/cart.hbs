@@ -20,8 +20,10 @@
                             <a class="thumbnail pull-left" href="#"> <img class="media-object" src="{{product.image}}"
                                     style="width: 72px; height: 72px;"> </a>
                             <div class="media-body">
-                                <h4 class="media-heading"><a href="#">{{product.name}}</a></h4>
-                                <h5 class="media-heading"> by <a href="#">{{product.seller.email}}</a></h5>
+                                <h4 class="media-heading"><a href="/product/{{id}}"
+                                        style="text-decoration: none; color:black">{{product.name}}</a></h4>
+                                <h5 class="media-heading"> by <a href="#"
+                                        style="text-decoration: none; color:gray">{{product.seller.email}}</a></h5>
                                 <span>Quantity: </span><span
                                     class="text-warning"><strong>{{product.qty}}</strong></span>
                             </div>
@@ -29,23 +31,22 @@
                     </td>
                     <td class="col-md-1 text-left"><strong class="label label-danger">{{product.category}}</strong></td>
                     <td class="col-sm-1 col-md-1" style="text-align: center">
-                        <form action="/addToCart" method="post">
-                            <button type="submit" style="border: none; background: none;">
-                                <i class="material-icons">add</i>
-                            </button>
+                        <a href="/addToCart/{{id}}" style="text-decoration: none; color:black">
+                            <i class="material-icons">add</i>
+                        </a>
                         </form>
                         <p class="lead mb-0 mt-0">{{qty}}</p>
-                        <form action="/decreaseOne" method="post">
-                            <button type="submit" style="border: none; background: none;">
-                                <i class="material-icons">remove</i>
-                            </button>
-                        </form>
+                        <a href="/addToCart/{{id}}" style="text-decoration: none; color:black">
+                            <i class="material-icons">remove</i>
+                        </a>
                     </td>
-                    <td class="col-sm-1 col-md-1 text-center"><strong>{{product.price}}</strong></td>
-                    <td class="col-sm-1 col-md-1 text-center"><strong>{{totalPrice}}</strong></td>
+                    <td class="col-sm-1 col-md-1 text-center"><strong>Rp {{product.price}}</strong></td>
+                    <td class="col-sm-1 col-md-1 text-center"><strong>Rp {{totalPrice}}</strong></td>
                     <td class="col-sm-1 col-md-1">
                         <button type="button" class="btn btn-danger">
-                            <span class="fa fa-remove"></span> Remove
+                            <a href="/removeFromCart/{{id}}" style="text-decoration: none; color:black">
+                                <span class="fa fa-remove"></span> Remove
+                            </a>
                         </button></td>
                 </tr>
                 {{/each}}

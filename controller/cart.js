@@ -14,12 +14,12 @@ exports.carts = async (req, res, next) => {
   });
 };
 
-exports.cart = async (req, res, next) => {
+exports.cart = (req, res, next) => {
   let cartId = "5e28299523b1700b9869ddbd";
-  await Cart.findById(cartId, async (err, cart) => {
+  Cart.findById(cartId, (err, cart) => {
     if (err) {
-      // res.render("client/warung/cart", { message: "Empty Cart" });
-      console.log(cart);
+      res.render("client/warung/cart", { message: "Empty Cart" });
+      // res.send("Error");
     } else {
       res.render("client/warung/cart", { cart: cart });
       // res.send(cart);
@@ -28,7 +28,7 @@ exports.cart = async (req, res, next) => {
 };
 
 exports.addToCart = async (req, res, next) => {
-  let productId = "5e2817aafbbeb52bc42d74c3";
+  let productId = req.params.id;
   let userId = "5e0762e77aa0601a8c7d575e";
   let cartId = "5e28299523b1700b9869ddbd";
   await User.findById(userId, async (err, user) => {
@@ -97,77 +97,9 @@ exports.addToCart = async (req, res, next) => {
   });
 };
 
-// exports.addToCart = async (req, res, next) => {
-//   let productId = "5e076dc334df8134189c0332";
-//   let userId = "5e0762e77aa0601a8c7d575e";
-//   let cartId = "5e1c207eb9873b4824472471";
-//   await Product.findById(productId, async (err, product) => {
-//     if (err) {
-//       console.log(err);
-//     } else {
-//       if (product.qty > 0) {
-//         await Cart.findById(cartId, async (err, cart) => {
-//           if (err) {
-//             let cart = new Cart({
-//               user: userId,
-//               order: {
-//                 _id: productId,
-//                 product: productId
-//               },
-//               totalPrice: product.price
-//             });
-//             await cart.save(async (err, cart) => {
-//               if (err) {
-//                 console.log(err);
-//               } else {
-//                 res.render("client/warung/cart", { cart: cart });
-//               }
-//             });
-//           } else {
-//             let item = cart.order.id(productId);
-//             if (item == undefined) {
-//               cart.order.push({
-//                 _id: productId,
-//                 product: productId
-//               });
-//               cart.qty += 1;
-//               cart.totalPrice += product.price;
-//               cart.save((err, cart) => {
-//                 if (err) {
-//                   console.log(err);
-//                 } else {
-//                   // res.render("client/warung/cart", { cart: cart });
-//                   res.send(cart);
-//                 }
-//               });
-//             } else {
-//               item.qty += 1;
-//               cart.totalPrice += product.price;
-//               cart.qty += 1;
-//               await cart.save((err, cart) => {
-//                 if (err) {
-//                   console.log(err);
-//                 } else {
-//                   // res.render("client/warung/cart", { cart: cart });
-//                   res.send(cart);
-//                 }
-//               });
-//             }
-//           }
-//         });
-//       } else {
-//         res.render("client/home", {
-//           product: product,
-//           message: "Product Kosong"
-//         });
-//       }
-//     }
-//   });
-// };
-
 exports.decreaseOne = async (req, res, next) => {
   let cartId = "5e28299523b1700b9869ddbd";
-  let productId = "5e2817aafbbeb52bc42d74c3";
+  let productId = req.params.id;
   await Product.findById(productId, async (err, product) => {
     if (err) {
       console.log(err);
@@ -207,8 +139,8 @@ exports.decreaseOne = async (req, res, next) => {
 };
 
 exports.removeFromCart = async (req, res, next) => {
-  let cartId = "5e27d458f4c68e1918807143";
-  let productId = "5e077056856fca2084ccd7e1";
+  let cartId = "5e28299523b1700b9869ddbd";
+  let productId = req.params.id;
   await Cart.findById(cartId, async (err, cart) => {
     if (err) {
       console.log(err);
@@ -225,14 +157,15 @@ exports.removeFromCart = async (req, res, next) => {
           if (err) {
             console.log(err);
           } else {
-            cart.totalPrice -= product.price * item.qty;
+            cart.totalPrice -= item.totalPrice;
             cart.qty -= item.qty;
             cart.order.pull({ _id: item._id });
             await cart.save((err, cart) => {
               if (err) {
                 console.log(err);
               } else {
-                res.render("client/warung/cart", { cart: cart });
+                res.redirect("/cart");
+                // res.render("client/warung/cart", { cart: cart });
               }
             });
           }

@@ -74,7 +74,7 @@ router.get("/transaction", adminController.transaction);
 
 // Product Routing
 router.get("/", productController.showProducts);
-router.get("/showProduct/:id", productController.showProduct);
+router.get("/product/:id", productController.product);
 router.get("/addProduct", (req, res) => {
   res.render("client/agen/addProduct", { title: "Add Product" });
 });
@@ -85,12 +85,12 @@ router.post("/updateProduct", productController.updateProduct);
 // Cart Routing
 router.get("/carts", cartController.carts);
 router.get("/cart", cartController.cart);
-router.post("/addToCart", cartController.addToCart);
-router.post("/decreaseOne", cartController.decreaseOne);
-router.get("/removeFromCart", cartController.removeFromCart);
+router.get("/addToCart/:id", cartController.addToCart);
+router.get("/decreaseOne/:id", cartController.decreaseOne);
+router.get("/removeFromCart/:id", cartController.removeFromCart);
 router.get("/removeCart", cartController.removeCart);
-router.get("/checkout", cartController.cart);
-router.post("/checkout", cartController.checkout);
+// router.get("/checkout", cartController.cart);
+// router.post("/checkout", cartController.checkout);
 router.post("/installment", cartController.installment);
 
 module.exports = router;

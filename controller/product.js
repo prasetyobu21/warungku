@@ -2,18 +2,18 @@ const Product = require("../models/product");
 const User = require("../models/user");
 const session = require("express-session");
 
-exports.showProducts = (req, res, next) => {
-  Product.find({}, (err, products) => {
+exports.showProducts = async (req, res, next) => {
+  await Product.find({}, (err, products) => {
     if (err) {
       console.log(err);
     } else {
-      // res.render("index", { title: "home", products: products });
-      res.send(products);
+      res.render("index", { title: "home", products: products });
+      // res.send(products);
     }
   });
 };
 
-exports.showProduct = async (req, res, next) => {
+exports.product = async (req, res, next) => {
   const productId = req.params.id;
   await Product.findById(productId, (err, product) => {
     if (err) {
