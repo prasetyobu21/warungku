@@ -26,7 +26,7 @@ exports.showProduct = async (req, res, next) => {
 
 exports.addProduct = async (req, res, next) => {
   if (session.login && session.id) {
-    const { name, image, price, qty, category } = req.body;
+    const { name, image, price, qty, category, description } = req.body;
     await User.findById(session.id, async (err, user) => {
       if (err) console.log(err);
       const product = new Product({
@@ -35,8 +35,10 @@ exports.addProduct = async (req, res, next) => {
         price: price,
         qty: qty,
         category: category,
+        description: description,
         seller: user
       });
+      // res.send(product);
       await product.save((err, docs) => {
         if (err) {
           console.log(err);

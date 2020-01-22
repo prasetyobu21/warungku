@@ -7,8 +7,7 @@ const productSchema = new Schema({
     type: String
   },
   image: {
-    type: Buffer,
-    contentType: String
+    type: String
   },
   price: {
     type: Number
@@ -24,6 +23,9 @@ const productSchema = new Schema({
   },
   seller: {
     type: Object
+  },
+  description: {
+    type: String
   },
   date: {
     type: Date,

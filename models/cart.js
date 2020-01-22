@@ -86,7 +86,8 @@ const cartSchema = new Schema({
     }
   },
   status: {
-    type: String
+    type: String,
+    default: "In Cart"
   },
   expiredDate: {
     type: Date,

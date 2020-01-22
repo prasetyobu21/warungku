@@ -22,7 +22,7 @@ exports.cart = async (req, res, next) => {
       console.log(cart);
     } else {
       res.render("client/warung/cart", { cart: cart });
-      // console.log(cart);
+      // res.send(cart);
     }
   });
 };
