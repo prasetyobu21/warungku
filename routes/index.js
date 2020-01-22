@@ -71,6 +71,7 @@ router.get("/getCart", adminController.cart);
 router.get("/admin/userList", adminController.userList);
 router.post("/updateCart", adminController.updateCart);
 router.get("/transaction", adminController.transaction);
+router.get("/adminPanel", adminController.adminDashboard);
 
 // Product Routing
 router.get("/", productController.showProducts);

@@ -20,6 +20,10 @@ var con = db.conn;
 //     };
 // };
 
+exports.adminDashboard = function(req, res, next) {
+  res.render("admin/dashboard");
+};
+
 exports.userList = function(req, res, next) {
   const result = con.query("select * from users", (err, result, field) => {
     if (err) {
@@ -139,6 +143,7 @@ exports.transaction = async (req, res, next) => {
       console.log(err);
     } else {
       res.render("admin/transactionList", { cart: cart });
+      // res.send(cart);
     }
   });
 };
