@@ -7,8 +7,8 @@ exports.showProducts = (req, res, next) => {
     if (err) {
       console.log(err);
     } else {
-      res.render("index", { title: "home", products: products });
-      // res.send(products);
+      // res.render("index", { title: "home", products: products });
+      res.send(products);
     }
   });
 };

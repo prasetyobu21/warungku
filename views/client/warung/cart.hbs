@@ -1,8 +1,101 @@
-Total price : {{cart.totalPrice}}
-total qty : {{cart.qty}}
-{{#each cart.order}}
-product : {{product.name}}
-price : {{product.price}}
-qty : {{qty}}
-{{/each}}
-User : {{cart.user.email}}
+{{>navbarWarung}}
+<div class="container mt-5 d-flex justify-content-center">
+    <div class="col-sm-12 col-md-10 col-md-offset-1">
+        <table class="table table-hover">
+            <thead>
+                <tr>
+                    <th>Product</th>
+                    <th>Category</th>
+                    <th>Quantity</th>
+                    <th class="text-center">Price</th>
+                    <th class="text-center">Total</th>
+                    <th> </th>
+                </tr>
+            </thead>
+            <tbody>
+                {{#each cart.order}}
+                <tr>
+                    <td class="col-sm-8 col-md-6">
+                        <div class="media">
+                            <a class="thumbnail pull-left" href="#"> <img class="media-object" src="{{product.image}}"
+                                    style="width: 72px; height: 72px;"> </a>
+                            <div class="media-body">
+                                <h4 class="media-heading"><a href="#">{{product.name}}</a></h4>
+                                <h5 class="media-heading"> by <a href="#">{{product.seller.email}}</a></h5>
+                                <span>Quantity: </span><span
+                                    class="text-warning"><strong>{{product.qty}}</strong></span>
+                            </div>
+                        </div>
+                    </td>
+                    <td class="col-md-1 text-left"><strong class="label label-danger">{{product.category}}</strong></td>
+                    <td class="col-sm-1 col-md-1" style="text-align: center">
+                        <form action="/addToCart" method="post">
+                            <button type="submit" style="border: none; background: none;">
+                                <i class="material-icons">add</i>
+                            </button>
+                        </form>
+                        <p class="lead mb-0 mt-0">{{qty}}</p>
+                        <form action="/decreaseOne" method="post">
+                            <button type="submit" style="border: none; background: none;">
+                                <i class="material-icons">remove</i>
+                            </button>
+                        </form>
+                    </td>
+                    <td class="col-sm-1 col-md-1 text-center"><strong>{{product.price}}</strong></td>
+                    <td class="col-sm-1 col-md-1 text-center"><strong>{{totalPrice}}</strong></td>
+                    <td class="col-sm-1 col-md-1">
+                        <button type="button" class="btn btn-danger">
+                            <span class="fa fa-remove"></span> Remove
+                        </button></td>
+                </tr>
+                {{/each}}
+                <tr>
+                    <td> </td>
+                    <td> </td>
+                    <td> </td>
+                    <td>
+                        <h5>Subtotal</h5>
+                    </td>
+                    <td class="text-right">
+                        <h5><strong>Rp {{cart.totalPrice}}</strong></h5>
+                    </td>
+                </tr>
+                <tr>
+                    <td> </td>
+                    <td> </td>
+                    <td> </td>
+                    <td>
+                        <h5>Estimated shipping</h5>
+                    </td>
+                    <td class="text-right">
+                        <h5><strong>$9.999.99</strong></h5>
+                    </td>
+                </tr>
+                <tr>
+                    <td> </td>
+                    <td> </td>
+                    <td> </td>
+                    <td>
+                        <h3>Total</h3>
+                    </td>
+                    <td class="text-right">
+                        <h3><strong>Rp {{cart.totalPrice}}</strong></h3>
+                    </td>
+                </tr>
+                <tr>
+                    <td> </td>
+                    <td> </td>
+                    <td> </td>
+                    <td>
+                        <button type="button" class="btn btn-warning">
+                            <span class="fa fa-shopping-cart"></span> Continue Shopping
+                        </button></td>
+                    <td>
+                        <button type="button" class="btn btn-success">
+                            Checkout <span class="fa fa-play"></span>
+                        </button></td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>

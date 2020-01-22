@@ -15,7 +15,7 @@ exports.carts = async (req, res, next) => {
 };
 
 exports.cart = async (req, res, next) => {
-  let cartId = "5e27d458f4c68e1918807143";
+  let cartId = "5e28299523b1700b9869ddbd";
   await Cart.findById(cartId, async (err, cart) => {
     if (err) {
       // res.render("client/warung/cart", { message: "Empty Cart" });
@@ -28,9 +28,9 @@ exports.cart = async (req, res, next) => {
 };
 
 exports.addToCart = async (req, res, next) => {
-  let productId = "5e271072c17d6e13fca90d94";
+  let productId = "5e2817aafbbeb52bc42d74c3";
   let userId = "5e0762e77aa0601a8c7d575e";
-  let cartId = "5e27d458f4c68e1918807143";
+  let cartId = "5e28299523b1700b9869ddbd";
   await User.findById(userId, async (err, user) => {
     if (err) {
       console.log(err);
@@ -43,7 +43,8 @@ exports.addToCart = async (req, res, next) => {
               user: user,
               order: {
                 _id: productId,
-                product: product
+                product: product,
+                totalPrice: product.price
               },
               totalPrice: product.price
             });
@@ -60,7 +61,8 @@ exports.addToCart = async (req, res, next) => {
               // res.send("Undefined");
               cart.order.push({
                 _id: productId,
-                product: product
+                product: product,
+                totalPrice: product.price
               });
               cart.qty += 1;
               cart.totalPrice += product.price;
@@ -68,19 +70,22 @@ exports.addToCart = async (req, res, next) => {
                 if (err) {
                   console.log(err);
                 } else {
-                  res.render("client/warung/cart", { cart: cart });
+                  res.redirect("/");
+                  // res.render("client/warung/cart", { cart: cart });
                   // res.send(cart);
                 }
               });
             } else {
               item.qty += 1;
               cart.totalPrice += product.price;
+              item.totalPrice += product.price;
               cart.qty += 1;
               await cart.save((err, cart) => {
                 if (err) {
                   console.log(err);
                 } else {
-                  res.render("client/warung/cart", { cart: cart });
+                  res.redirect("/cart");
+                  // res.render("client/warung/cart", { cart: cart });
                   // res.send(cart.user.email);
                 }
               });
@@ -161,8 +166,8 @@ exports.addToCart = async (req, res, next) => {
 // };
 
 exports.decreaseOne = async (req, res, next) => {
-  let cartId = "5e27d458f4c68e1918807143";
-  let productId = "5e077056856fca2084ccd7e1";
+  let cartId = "5e28299523b1700b9869ddbd";
+  let productId = "5e2817aafbbeb52bc42d74c3";
   await Product.findById(productId, async (err, product) => {
     if (err) {
       console.log(err);
@@ -174,16 +179,19 @@ exports.decreaseOne = async (req, res, next) => {
           } else {
             let item = cart.order.id(productId);
             item.qty -= 1;
+            item.totalPrice -= product.price;
             cart.totalPrice -= product.price;
             cart.qty -= 1;
-            if (qty < 1) {
+            if (cart.qty < 1) {
               cart.order.pull({ _id: productId });
             }
             await cart.save((err, cart) => {
               if (err) {
                 res.send(err);
               } else {
-                res.render("client/warung/cart", { cart: cart });
+                res.redirect("/cart");
+                // res.render("client/warung/cart", { cart: cart });
+                // res.json(cart);
               }
             });
           }
